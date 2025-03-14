@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "397695611758",
+    "project_id": "psychology-45c30",
+    "storage_bucket": "psychology-45c30.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397695611758:android:30ece44df301c2859f477f",
+        "android_client_info": {
+          "package_name": "com.psychology.getoutofbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397695611758-m2gsqvd76lsgbq9h99lbj4hie8hs4buh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psychology.getoutofbox",
+            "certificate_hash": "302188878d91959ee0c76357f96f6c23e128c22e"
+          }
+        },
+        {
+          "client_id": "397695611758-7oa2vmslcgkk0mickgjjeor2hevafq4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzdkjLjmQpoDgyWkqfPrJuDQSZA9nPUuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397695611758-7oa2vmslcgkk0mickgjjeor2hevafq4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "397695611758-0qaa2neav8aj3d4ce5lngri839vvc3ml.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.psychology.getoutofbox"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

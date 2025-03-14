@@ -1,4 +1,4 @@
-package com.example.getoutofthebox
+package com.psychology.getoutofbox
 
 import io.flutter.embedding.android.FlutterActivity
 
