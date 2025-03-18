@@ -1,35 +1,34 @@
 import 'package:bloc/bloc.dart';
-import 'package:getoutofthebox/core/di/di.dart';
-import 'package:getoutofthebox/core/network/api_service.dart';
+import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/therapeutic_games/therapeutic_games_repository.dart';
 import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
-import 'package:meta/meta.dart';
-
 part 'therapeutic_game_event.dart';
 part 'therapeutic_game_state.dart';
 
 class TherapeuticGameBloc
     extends Bloc<TherapeuticGameEvent, TherapeuticGameState> {
-  final repository =
-      TherapeuticGamesRepository(apiService: getIt.get<ApiService>());
+  final repository = Get.find<TherapeuticGamesRepository>();
 
-  TherapeuticGameBloc() : super(TherapeuticGameInitial()) {
-    on<GetTherapeuticGame>((event, emit) async {
-      emit(TherapeuticGameLoading());
+  TherapeuticGameBloc() : super(TherapeuticGameState.initial()) {
+    on<GetTherapeuticGame>(_onGetTherapeuticGame);
+  }
 
-      try {
-        final response = await repository.getGames();
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          // Directly use response.data as a TherapeuticGamesList
-          emit(TherapeuticGameSuccess(
-              gamesList: TherapeuticGamesList.fromJson(response.data)));
-        } else {
-          emit(TherapeuticGameError(errorMessage: 'Something went wrong'));
-        }
-      } catch (e) {
-        emit(TherapeuticGameError(errorMessage: 'Error: $e'));
+  Future<void> _onGetTherapeuticGame(
+      GetTherapeuticGame event, Emitter<TherapeuticGameState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      final answer = await repository.getGames();
+      emit(state.copyWith(isLoading: false));
+      if (answer == '') {
+        emit(state.copyWith(
+            therapeuticGames:
+                Get.find<TherapeuticGamesRepository>().therapeuticGames));
+      } else {
+        emit(state.copyWith(errorMessage: answer));
       }
-    });
+    } catch (e) {
+      emit(state.copyWith(errorMessage: e.toString()));
+    }
   }
 }

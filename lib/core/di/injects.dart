@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/network/api/api.dart';
 import 'package:getoutofthebox/core/network/api/dio_client.dart';
 import 'package:getoutofthebox/core/network/api/token_storage.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/bloc/therapeutic_game_bloc.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/therapeutic_games_repository.dart';
 
 /// внедряем зависимости
 Future initMain() async {
@@ -21,5 +23,17 @@ Future initMain() async {
   } catch (e) {
     Logger.e('DioClient error = $e');
     return 'DioClient $e';
+  }
+
+  try {
+    Get.put<TherapeuticGamesRepository>(TherapeuticGamesRepository());
+  } catch (e) {
+    Logger.e('TherapeuticGamesRepository error = $e');
+  }
+
+  try {
+    Get.put<TherapeuticGameBloc>(TherapeuticGameBloc());
+  } catch (e) {
+    Logger.e('TherapeuticGameBloc error = $e');
   }
 }

@@ -5,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:getoutofthebox/core/common/styles.dart';
+import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/authorization/bloc/authorization_bloc.dart';
 import 'package:getoutofthebox/src/features/authorization/google_fb_auth/fb_auth.dart';
 import 'package:getoutofthebox/src/features/authorization/google_fb_auth/google_auth.dart';
+import 'package:getoutofthebox/src/features/authorization/privacy_auth.dart';
 
 class AuthorizationPage extends StatefulWidget {
   const AuthorizationPage({super.key});
@@ -306,15 +307,19 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                   SizedBox(
                     height: 92.h,
                   ),
-                  const Text(
-                    'Terms&Conditions',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationColor: StyleManager.mainColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        height: 16.24 / 14,
-                        color: StyleManager.mainColor),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrivacyAuth(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Terms&Conditions',
+                      style: AppText.text14Underline,
+                    ),
                   )
                 ]),
               ),

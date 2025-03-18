@@ -1,7 +1,7 @@
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:getoutofthebox/core/di/di.dart';
+import 'package:getoutofthebox/core/network/api/api.dart';
+import 'package:getoutofthebox/core/network/api/response_api.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:talker/talker.dart';
 
 class GoogleAuthService {
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -13,12 +13,20 @@ class GoogleAuthService {
       if (googleSignInAccount != null) {
         GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
-        // Получаем ID токен вместо access токена
         final idToken = googleSignInAuthentication.idToken;
         if (idToken != null) {
-          getIt.get<Talker>().info(
-              "Signed in with Google. ID Token received. ID Token: $idToken");
-          return idToken;
+          final email = googleSignInAccount.email;
+          Logger.d("Success GoogleSignInAccount $email $idToken");
+          final ResponseApi res =
+              await Api().loginViaGoogle(email, fcmToken: idToken);
+          if (res is ResSuccess) {
+            Logger.i("Success  ${res.data}");
+            final accessToken = res.data['access'];
+            return accessToken;
+          } else if (res is ResError) {
+            Logger.e("Error signing in with Google: ${res.errorMessage}");
+            return '';
+          }
         } else {
           Logger.e("No ID Token received from Google.");
           return '';
@@ -31,6 +39,7 @@ class GoogleAuthService {
       Logger.e("Error signing in with Google: $error");
       return '';
     }
+    return '';
   }
 
   // Метод для выхода

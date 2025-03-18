@@ -17,7 +17,6 @@ class DioClient {
     return Options(
       headers: {
         'Content-type': 'application/json',
-        'User-Agent': 'api-mobile-rent',
         ...Get.find<TokenStorage>().acsessToken.isNotEmpty
             ? {
                 'Authorization':
