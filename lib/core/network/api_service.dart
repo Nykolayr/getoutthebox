@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/di/di.dart';
+import 'package:getoutofthebox/core/network/api/token_storage.dart';
 import 'package:getoutofthebox/core/network/dio_client.dart';
 import 'package:getoutofthebox/core/shared_prefs/shared_prefs_repo.dart';
 import 'package:talker/talker.dart';
@@ -11,10 +13,8 @@ class ApiService {
   ApiService(this.dioClient);
 
   getAuthTokens() async {
-    String? accessToken =
-        await getIt.get<SharedPrefsRepository>().getString('access_token');
-    String? refreshToken =
-        await getIt.get<SharedPrefsRepository>().getString('refresh_token');
+    String? accessToken = await Get.find<TokenStorage>().getAcsessToken();
+    String? refreshToken = await Get.find<TokenStorage>().getRefreshToken();
     return {
       'refresh_token': refreshToken,
       'access_token': accessToken,
@@ -112,6 +112,10 @@ class ApiService {
       final newRefreshToken = response.data['refresh'];
       await prefs.setString('access_token', newAccessToken);
       await prefs.setString('refresh_token', newRefreshToken);
+      await Get.find<TokenStorage>().saveTokens(
+        newAccessToken,
+        newRefreshToken,
+      );
     } catch (e) {
       talker.error('Ошибка при обновлении токенов: $e');
       rethrow;

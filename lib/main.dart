@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/di/di.dart';
+import 'package:getoutofthebox/core/di/injects.dart';
 import 'package:getoutofthebox/firebase_options.dart';
 import 'package:getoutofthebox/src/features/authorization/authorization_page.dart';
 import 'package:getoutofthebox/src/features/authorization/authorization_repository.dart';
@@ -26,9 +27,9 @@ import 'package:getoutofthebox/src/features/registration/registration_repository
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initMain();
   await ScreenUtil.ensureScreenSize();
   setup();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Get out of the Box</string>
+      <string name="facebook_app_id">628501293298970</string>
+    <string name="fb_login_protocol_scheme">fb628501293298970</string>
+    <string name="facebook_client_token">5357105730c3547439c40811bf2cdc13</string>
+</resources>

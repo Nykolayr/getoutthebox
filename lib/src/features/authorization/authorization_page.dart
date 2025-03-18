@@ -232,7 +232,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                       final idToken =
                           await googleAuthService.signInAndGetIdToken();
                       if (idToken != '') {
-                        Navigator.pushNamed(context, '/homepage');
+                        // Navigator.pushNamed(context, '/homepage');
                       } else {
                         // Обработка ошибки
                         Get.snackbar('Error',
@@ -271,8 +271,8 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                     onTap: () async {
                       final accessToken =
                           await facebookAuthService.signInWithFacebook();
-                      if (accessToken != null) {
-                        Navigator.pushNamed(context, '/homepage');
+                      if (accessToken.isNotEmpty) {
+                        // Navigator.pushNamed(context, '/homepage');
                       } else {
                         Get.snackbar('Error',
                             'Facebook sign-in failed. Please try again.');

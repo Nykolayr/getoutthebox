@@ -1,3 +1,4 @@
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:getoutofthebox/core/di/di.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talker/talker.dart';
@@ -15,17 +16,19 @@ class GoogleAuthService {
         // Получаем ID токен вместо access токена
         final idToken = googleSignInAuthentication.idToken;
         if (idToken != null) {
-          getIt.get<Talker>().info("Signed in with Google. ID Token received.");
+          getIt.get<Talker>().info(
+              "Signed in with Google. ID Token received. ID Token: $idToken");
           return idToken;
         } else {
-          getIt.get<Talker>().error("No ID Token received from Google.");
+          Logger.e("No ID Token received from Google.");
           return '';
         }
       } else {
+        Logger.e("No GoogleSignInAccount received from Google.");
         return '';
       }
     } catch (error) {
-      getIt.get<Talker>().info("Error signing in with Google: $error");
+      Logger.e("Error signing in with Google: $error");
       return '';
     }
   }

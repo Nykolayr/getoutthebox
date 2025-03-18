@@ -1,7 +1,10 @@
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/di/di.dart';
 import 'package:getoutofthebox/core/network/api_service.dart';
 import 'package:getoutofthebox/core/shared_prefs/shared_prefs_repo.dart';
 import 'package:getoutofthebox/src/models/authorization_response_model.dart';
+
+import '../../../core/network/api/token_storage.dart';
 
 class AuthorizationRepositoryImpl {
   final ApiService apiService;
@@ -25,6 +28,10 @@ class AuthorizationRepositoryImpl {
         responseModel.refreshToken != null) {
       await prefs.setString('access_token', responseModel.accessToken!);
       await prefs.setString('refresh_token', responseModel.refreshToken!);
+      await Get.find<TokenStorage>().saveTokens(
+        responseModel.accessToken!,
+        responseModel.refreshToken!,
+      );
     }
 
     return responseModel;
@@ -43,5 +50,6 @@ class AuthorizationRepositoryImpl {
   Future<void> logout() async {
     await prefs.deleteString('access_token');
     await prefs.deleteString('refresh_token');
+    await Get.find<TokenStorage>().deleteTokens();
   }
 }
