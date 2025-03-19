@@ -244,7 +244,8 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                                   itemBuilder: (context, index) {
                                     return GameCardWidget(
                                       title: games[index]['title'],
-                                      subtitle: games[index]['subtitle'],
+                                      pathImage:
+                                          games[index]['pathImage'] ?? '',
                                       onPressed: () {
                                         openNextBottomSheet(context);
                                       },

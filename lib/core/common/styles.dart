@@ -122,13 +122,13 @@ class TextStylesManager {
     color: StyleManager.darkGrey,
     height: 20 / 16,
   );
-    static TextStyle smallBlackTitle = TextStyle(
+  static TextStyle smallBlackTitle = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 20.sp,
     color: StyleManager.blackColor,
     height: 23.2 / 20,
   );
-      static TextStyle littleTile = TextStyle(
+  static TextStyle littleTile = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 14.sp,
     color: StyleManager.whiteColor,

@@ -44,6 +44,7 @@ dependencies:
   flutter_easylogger: ^2.3.3 # https://pub.dev/packages/flutter_easylogger
   gap: ^3.0.1 #https://pub.dev/packages/gap
   flutter_launcher_icons: ^0.14.3 #https://pub.dev/packages/flutter_launcher_icons
+  cached_network_image: ^3.4.1 #https://pub.dev/packages/cached_network_image
 
 dev_dependencies:
   flutter_test:

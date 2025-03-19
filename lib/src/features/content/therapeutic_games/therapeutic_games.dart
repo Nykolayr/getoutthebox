@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
@@ -9,6 +10,7 @@ import 'package:getoutofthebox/src/features/content/therapeutic_games/selected_t
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_start_free_trial_button.dart';
+import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 import 'package:getoutofthebox/src/features/widgets/game_card_widget.dart';
 
 class TherapeuticGames extends StatefulWidget {
@@ -95,8 +97,15 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                       );
                     } else {
                       final games = state.therapeuticGames;
-                      return ListView.separated(
+                      return GridView.builder(
                         padding: EdgeInsets.zero,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // 2 элемента в ряд
+                          crossAxisSpacing: 8, // горизонтальный отступ
+                          mainAxisSpacing: 8, // вертикальный отступ
+                          childAspectRatio: 1.2, // соотношение сторон карточки
+                        ),
                         itemCount: games.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
@@ -112,8 +121,8 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                               }
                             },
                             child: GameCardWidget(
-                              title: 'Games',
-                              subtitle: games[index].title,
+                              title: games[index].title,
+                              pathImage: games[index].category.icon,
                               onPressed: () {
                                 if (games[index].isFree) {
                                   Navigator.push(
@@ -131,38 +140,29 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                             ),
                           );
                         },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: 10);
-                        },
                       );
                     }
                   },
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const Gap(30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomStartFreeTrialButton(onPressed: () {}),
               ],
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
+            const Gap(30),
+            Padding(
               padding: getMarginOrPadding(horizontal: 16),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomBackButton(),
-                    ],
-                  )
+                  const CustomBackButton(),
+                  CustomNextButton(
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
