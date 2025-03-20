@@ -40,9 +40,24 @@ class AnalyzeCardEmotion extends StatelessWidget {
                 ),
               ],
             ),
-            haveAccess
-                ? SvgPicture.asset('assets/icons/forward.svg')
-                : SvgPicture.asset('assets/icons/insert.svg')
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: StyleManager.mainColor.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                  child: SvgPicture.asset(
+                haveAccess
+                    ? 'assets/icons/forward.svg'
+                    : 'assets/icons/insert.svg',
+                colorFilter: const ColorFilter.mode(
+                  StyleManager.mainColor,
+                  BlendMode.srcIn,
+                ),
+              )),
+            ),
           ],
         ),
       ),
