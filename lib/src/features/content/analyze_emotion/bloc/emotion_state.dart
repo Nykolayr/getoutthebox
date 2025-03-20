@@ -6,6 +6,8 @@ class EmotionState extends Equatable {
   final bool isLoading;
   final String errorMessage;
   final bool isListChange;
+  final List<String> experience;
+  final int selectedExperience;
   @override
   const EmotionState({
     required this.emotionGames,
@@ -13,6 +15,8 @@ class EmotionState extends Equatable {
     required this.isLoading,
     required this.errorMessage,
     required this.isListChange,
+    required this.experience,
+    required this.selectedExperience,
   });
 
   factory EmotionState.initial() {
@@ -22,6 +26,8 @@ class EmotionState extends Equatable {
       errorMessage: '',
       isListChange: false,
       emotionGames: Get.find<EmotionRepository>().emotionGames,
+      experience: Get.find<EmotionRepository>().experience,
+      selectedExperience: 0,
     );
   }
 
@@ -32,6 +38,8 @@ class EmotionState extends Equatable {
     bool? isListChange,
     EmotionModel? emotion,
     List<EmotionGamesModel>? emotionGames,
+    List<String>? experience,
+    int? selectedExperience,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
@@ -44,6 +52,8 @@ class EmotionState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       isListChange: shouldToggleList ? !this.isListChange : this.isListChange,
       emotionGames: emotionGames ?? this.emotionGames,
+      experience: experience ?? this.experience,
+      selectedExperience: selectedExperience ?? this.selectedExperience,
     );
   }
 
@@ -54,5 +64,7 @@ class EmotionState extends Equatable {
         errorMessage,
         isListChange,
         emotionGames,
+        experience,
+        selectedExperience,
       ];
 }

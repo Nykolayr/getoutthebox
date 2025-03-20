@@ -13,3 +13,8 @@ class ChangeSelectedEmotion extends EmotionEvent {
   final int id;
   ChangeSelectedEmotion({required this.id});
 }
+
+class ChangeSelectedExperience extends EmotionEvent {
+  final int id;
+  ChangeSelectedExperience({required this.id});
+}

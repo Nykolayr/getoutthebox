@@ -12,6 +12,13 @@ class EmotionRepository {
   List<EmotionModel> emotions = [];
   List<EmotionGamesModel> emotionGames = [];
   EmotionModel emotion = EmotionModel.initial();
+  List<String> experience = [
+    'Never',
+    'Rarely',
+    'Sometimes',
+    'Often',
+    'Constantly',
+  ];
   // Приватный конструктор
   EmotionRepository._() {
     apiService = Get.find<Api>();

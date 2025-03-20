@@ -13,6 +13,13 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<GetEmotions>(_onGetEmotions);
     on<GetEmotionGames>(_onGetEmotionGames);
     on<ChangeSelectedEmotion>(_onChangeSelectedEmotion);
+    on<ChangeSelectedExperience>(_onChangeSelectedExperience);
+  }
+
+  /// Изменение выбранного опыта
+  Future<void> _onChangeSelectedExperience(
+      ChangeSelectedExperience event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(selectedExperience: event.id));
   }
 
   /// Изменение выбранной эмоции

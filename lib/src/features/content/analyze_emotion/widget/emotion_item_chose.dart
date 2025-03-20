@@ -24,7 +24,6 @@ class EmotionItemChoose extends StatelessWidget {
           Checkbox(
             value: emotion.isSelected,
             onChanged: (value) {
-              print(value);
               onTap(emotion);
             },
           ),

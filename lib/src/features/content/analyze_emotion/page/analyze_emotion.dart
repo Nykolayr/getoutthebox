@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/cognitive_distortions.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/cognitive_distortions.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
