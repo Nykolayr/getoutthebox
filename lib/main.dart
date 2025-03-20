@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
               '/registration': (context) => const RegistrationPage(),
               '/password_reset': (context) => const ResetPasswordPage(),
               '/therapeutic_games': (context) => const TherapeuticGames(),
-              '/analyze_emotion': (context) => AnalyzeEmotion(),
+              '/analyze_emotion': (context) => const AnalyzeEmotion(),
             },
             theme: ThemeData(
               appBarTheme:

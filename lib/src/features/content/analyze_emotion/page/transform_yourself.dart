@@ -3,19 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
+import 'package:getoutofthebox/src/features/drawer/widgets/stars_feedback.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
-class KeepChanging extends StatefulWidget {
-  const KeepChanging({super.key});
+class TransformYourself extends StatefulWidget {
+  const TransformYourself({super.key});
 
   @override
-  State<KeepChanging> createState() => _KeepChangingfState();
+  State<TransformYourself> createState() => _TransformYourselfState();
 }
 
-class _KeepChangingfState extends State<KeepChanging> {
+class _TransformYourselfState extends State<TransformYourself> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int score = 0;
 
@@ -48,10 +50,30 @@ class _KeepChangingfState extends State<KeepChanging> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Keep on\nChanging',
-                    style: TextStylesManager.headerMainMenu,
-                    textAlign: TextAlign.end,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Transform\nYourself',
+                        style: TextStylesManager.headerMainMenu,
+                        textAlign: TextAlign.end,
+                      ),
+                      SizedBox(height: 6.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: StyleManager.mainColor,
+                          borderRadius: BorderRadius.circular(70),
+                        ),
+                        child: Padding(
+                          padding: getMarginOrPadding(
+                              right: 10, left: 10, top: 6, bottom: 6),
+                          child: Text(
+                            'Third step',
+                            style: TextStylesManager.littleTile,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -62,6 +84,27 @@ class _KeepChangingfState extends State<KeepChanging> {
                   title: 'Step into change',
                   onPressed: () {},
                   haveAccess: true),
+            ),
+            Padding(
+              padding: getMarginOrPadding(horizontal: 16, top: 30),
+              child: Column(
+                children: [
+                  Text(
+                    'How useful was it for you?',
+                    style: TextStylesManager.smallBlackTitle,
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  StarsFeedback(
+                    onRatingChanged: (int rating) {
+                      setState(() {
+                        score = rating; // Обновляем кол-во звезд
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             Row(
@@ -82,11 +125,11 @@ class _KeepChangingfState extends State<KeepChanging> {
                   const CustomBackButton(),
                   CustomNextButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => TransformYourself()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const KeepChanging()),
+                      );
                     },
                   ),
                 ],

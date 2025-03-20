@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/transform_yourself.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/expiriens_item.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';

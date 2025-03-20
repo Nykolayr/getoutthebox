@@ -19,6 +19,7 @@ class EmotionRepository {
     'Often',
     'Constantly',
   ];
+
   // Приватный конструктор
   EmotionRepository._() {
     apiService = Get.find<Api>();

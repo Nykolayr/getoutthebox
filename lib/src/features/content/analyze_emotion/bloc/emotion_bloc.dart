@@ -14,6 +14,22 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<GetEmotionGames>(_onGetEmotionGames);
     on<ChangeSelectedEmotion>(_onChangeSelectedEmotion);
     on<ChangeSelectedExperience>(_onChangeSelectedExperience);
+    on<AddInnerWork>(_onAddInnerWork);
+    on<RemoveInnerWork>(_onRemoveInnerWork);
+  }
+
+  /// Добавление посещения в список
+  Future<void> _onAddInnerWork(
+      AddInnerWork event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(innerWork: [...state.innerWork, event.date]));
+  }
+
+  /// Удаление посещения из списка
+  Future<void> _onRemoveInnerWork(
+      RemoveInnerWork event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(
+        innerWork:
+            state.innerWork.where((date) => date != event.date).toList()));
   }
 
   /// Изменение выбранного опыта

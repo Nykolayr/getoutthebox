@@ -8,6 +8,8 @@ class EmotionState extends Equatable {
   final bool isListChange;
   final List<String> experience;
   final int selectedExperience;
+  final bool isChange;
+  final List<DateTime> innerWork;
   @override
   const EmotionState({
     required this.emotionGames,
@@ -17,6 +19,8 @@ class EmotionState extends Equatable {
     required this.isListChange,
     required this.experience,
     required this.selectedExperience,
+    required this.isChange,
+    required this.innerWork,
   });
 
   factory EmotionState.initial() {
@@ -28,6 +32,8 @@ class EmotionState extends Equatable {
       emotionGames: Get.find<EmotionRepository>().emotionGames,
       experience: Get.find<EmotionRepository>().experience,
       selectedExperience: 0,
+      isChange: false,
+      innerWork: const [],
     );
   }
 
@@ -40,11 +46,14 @@ class EmotionState extends Equatable {
     List<EmotionGamesModel>? emotionGames,
     List<String>? experience,
     int? selectedExperience,
+    bool? isChange,
+    List<DateTime>? innerWork,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
             emotionGames != null && emotionGames != this.emotionGames ||
-            emotions != null && emotions != this.emotions;
+            emotions != null && emotions != this.emotions ||
+            innerWork != null && innerWork != this.innerWork;
 
     return EmotionState(
       emotions: emotions ?? this.emotions,
@@ -54,6 +63,8 @@ class EmotionState extends Equatable {
       emotionGames: emotionGames ?? this.emotionGames,
       experience: experience ?? this.experience,
       selectedExperience: selectedExperience ?? this.selectedExperience,
+      isChange: isChange ?? this.isChange,
+      innerWork: innerWork ?? this.innerWork,
     );
   }
 
@@ -66,5 +77,7 @@ class EmotionState extends Equatable {
         emotionGames,
         experience,
         selectedExperience,
+        isChange,
+        innerWork,
       ];
 }
