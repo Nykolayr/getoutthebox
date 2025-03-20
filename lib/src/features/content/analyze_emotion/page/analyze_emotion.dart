@@ -1,29 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/transform_yourself.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/cognitive_distortions.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/page/cognitive_radio_button.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/show_modal_bottom.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/trigers_item.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
-class CognitiveDistortions extends StatelessWidget {
-  CognitiveDistortions({super.key});
+class AnalyzeEmotion extends StatefulWidget {
+  const AnalyzeEmotion({super.key});
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  State<AnalyzeEmotion> createState() => _AnalyzeEmotionState();
+}
+
+class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final bloc = Get.find<EmotionBloc>();
+  List<String> games = [
+    'Who do you hold a grudge againt?\nWhat could make you forgive them?',
+    'Do you often have nightmares or\nrecurring dreams? Describe them.',
+    'What is one thing you need to let go of?',
+  ];
+
+  List<EmotionModel> emotions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.add(GetEmotions());
+    bloc.add(GetEmotionGames());
+    emotions = bloc.state.emotions;
+  }
+
+  void openNextBottomSheet(BuildContext context) {
+    showEmotionModalBottomSheet(
+      context: context,
+      title: 'Explore the triggers',
+      content: Column(
+        children: [
+          ...List.generate(
+            games.length,
+            (index) => TrigersItem(
+              title: games[index],
+              onTap: () => openEmotionBottomSheet(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void openEmotionBottomSheet(BuildContext context) {
+    showEmotionModalBottomSheet(
+      context: context,
+      showBackButton: true,
+      title: 'Choose your emotion',
+      content: BlocBuilder<EmotionBloc, EmotionState>(
+        bloc: bloc,
+        builder: (context, state) {
+          return Column(
+            children: [
+              ...List.generate(
+                state.emotions.length,
+                (index) => EmotionItemChoose(
+                  key: UniqueKey(),
+                  emotion: state.emotions[index],
+                  onTap: (emotion) {
+                    bloc.add(ChangeSelectedEmotion(id: emotion.id));
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
+            scaffoldKey.currentState?.openDrawer();
           },
           icon: SvgPicture.asset('assets/icons/hamburger.svg'),
         ),
@@ -48,7 +120,7 @@ class CognitiveDistortions extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Cognitive\nDistortions',
+                        'Analyze your\nEmotions',
                         style: TextStylesManager.headerMainMenu,
                         textAlign: TextAlign.end,
                       ),
@@ -62,7 +134,7 @@ class CognitiveDistortions extends StatelessWidget {
                           padding: getMarginOrPadding(
                               right: 10, left: 10, top: 6, bottom: 6),
                           child: Text(
-                            'Second step',
+                            'First step',
                             style: TextStylesManager.littleTile,
                           ),
                         ),
@@ -73,26 +145,11 @@ class CognitiveDistortions extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: getMarginOrPadding(horizontal: 8, bottom: 30),
+              padding: getMarginOrPadding(horizontal: 8),
               child: AnalyzeCardEmotion(
-                  title: 'Spot the distortion',
-                  onPressed: () {},
-                  haveAccess: false),
-            ),
-            Center(
-              child: Column(
-                children: [
-                  Text(
-                    'How often you experience it on \nyourself?',
-                    style: TextStylesManager.smallBlackTitle,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding: getMarginOrPadding(horizontal: 21),
-                    child: const CognitiveRadioButton(),
-                  ),
-                ],
+                title: 'Explore the triggers',
+                onPressed: () => openNextBottomSheet(context),
+                haveAccess: true,
               ),
             ),
             const Spacer(),
@@ -117,7 +174,7 @@ class CognitiveDistortions extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const TransformYourself()),
+                            builder: (context) => CognitiveDistortions()),
                       );
                     },
                   ),

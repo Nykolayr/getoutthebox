@@ -33,10 +33,10 @@ class SmallBoxMain extends StatefulWidget {
   final void Function() onPressed;
 
   @override
-  _SmallBoxMainState createState() => _SmallBoxMainState();
+  SmallBoxMainState createState() => SmallBoxMainState();
 }
 
-class _SmallBoxMainState extends State<SmallBoxMain> {
+class SmallBoxMainState extends State<SmallBoxMain> {
   double _scale = 1.0;
 
   void _onTapDown(TapDownDetails details) {
@@ -147,10 +147,10 @@ class SmallBoxMainBig extends StatefulWidget {
   final void Function() onPressed;
 
   @override
-  _SmallBoxMainBigState createState() => _SmallBoxMainBigState();
+  SmallBoxMainBigState createState() => SmallBoxMainBigState();
 }
 
-class _SmallBoxMainBigState extends State<SmallBoxMainBig> {
+class SmallBoxMainBigState extends State<SmallBoxMainBig> {
   double _scale = 1.0;
 
   void _onTapDown(TapDownDetails details) {

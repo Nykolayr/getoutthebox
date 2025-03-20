@@ -153,7 +153,8 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                       children: [
                         SvgPicture.asset(
                           'assets/icons/forgorpassword.svg',
-                          color: StyleManager.grayColor,
+                          colorFilter: const ColorFilter.mode(
+                              StyleManager.grayColor, BlendMode.srcIn),
                         ),
                         SizedBox(width: 8.w),
                         Text(

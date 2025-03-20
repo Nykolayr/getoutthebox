@@ -35,6 +35,16 @@ class GameCategory {
       'icon': icon,
     };
   }
+
+  factory GameCategory.initial() {
+    return GameCategory(
+      id: 0,
+      title: '',
+      isActive: true,
+      createdAt: '',
+      icon: '',
+    );
+  }
 }
 
 /// Модель терапевтической игры
@@ -87,6 +97,41 @@ class TherapeuticGame {
       'created_at': createdAt,
       'questions': questions.map((q) => q.toJson()).toList(),
     };
+  }
+
+  factory TherapeuticGame.initial() {
+    return TherapeuticGame(
+      id: '',
+      category: GameCategory.initial(),
+      description: '',
+      title: '',
+      isActive: true,
+      isFree: true,
+      createdAt: '',
+      questions: [],
+    );
+  }
+
+  TherapeuticGame copyWith({
+    List<TherapeuticGameQuestion>? questions,
+    String? id,
+    GameCategory? category,
+    String? description,
+    String? title,
+    bool? isActive,
+    bool? isFree,
+    String? createdAt,
+  }) {
+    return TherapeuticGame(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      title: title ?? this.title,
+      isActive: isActive ?? this.isActive,
+      isFree: isFree ?? this.isFree,
+      createdAt: createdAt ?? this.createdAt,
+      questions: questions ?? this.questions,
+    );
   }
 }
 

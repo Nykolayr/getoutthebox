@@ -32,7 +32,7 @@ class _MyWidgetState extends State<CognitiveRadioButton> {
                 activeColor: StyleManager.mainColor, // Зеленый цвет
               ),
             ),
-            Text("Never"),
+            const Text("Never"),
           ],
         ),
 
@@ -53,7 +53,7 @@ class _MyWidgetState extends State<CognitiveRadioButton> {
                 activeColor: StyleManager.mainColor, // Зеленый цвет
               ),
             ),
-            Text("Rarely"),
+            const Text("Rarely"),
           ],
         ),
 
@@ -74,7 +74,7 @@ class _MyWidgetState extends State<CognitiveRadioButton> {
                 activeColor: StyleManager.mainColor, // Зеленый цвет
               ),
             ),
-            Text("Sometimes"),
+            const Text("Sometimes"),
           ],
         ),
         Column(
@@ -93,7 +93,7 @@ class _MyWidgetState extends State<CognitiveRadioButton> {
                 activeColor: StyleManager.mainColor, // Зеленый цвет
               ),
             ),
-            Text("Often"),
+            const Text("Often"),
           ],
         ),
 
@@ -113,7 +113,7 @@ class _MyWidgetState extends State<CognitiveRadioButton> {
                 activeColor: StyleManager.mainColor, // Зеленый цвет
               ),
             ),
-            Text("Constantly"),
+            const Text("Constantly"),
           ],
         ),
       ],

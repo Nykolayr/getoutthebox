@@ -21,7 +21,28 @@ class Api {
     });
   }
 
-  Future<ResponseApi> getGames() async {
+  /// Получение списка терапевтических игр
+  Future<ResponseApi> getGamesApi() async {
     return await dio.get('/therapy_game');
+  }
+
+  /// Получение терапевтической игры по id
+  Future<ResponseApi> getGameByIdApi(String id) async {
+    return await dio.get('/therapy_game/$id');
+  }
+
+  /// Получение списка вопросов терапевтической игры по id
+  Future<ResponseApi> getQuestionsApi(String id) async {
+    return await dio.get('/therapy_game/$id/get_questions_for_game');
+  }
+
+  /// Получение списка эмоций
+  Future<ResponseApi> getEmotionsApi() async {
+    return await dio.get('/emotion');
+  }
+
+  /// Получение списка игр по эмоции
+  Future<ResponseApi> getEmotionGamesApi() async {
+    return await dio.get('/emotion_game');
   }
 }

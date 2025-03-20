@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:getoutofthebox/src/features/authorization/authorization_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'authorization_event.dart';
 part 'authorization_state.dart';

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:getoutofthebox/core/common/styles.dart';
+import 'package:gap/gap.dart';
+import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/app_bar.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/bottom_bar.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/question_item.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
-import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
-import 'package:getoutofthebox/src/features/widgets/custom_elevated_button.dart';
+
 import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
 
 class SelectedTherapeuticGames extends StatefulWidget {
@@ -18,154 +21,107 @@ class SelectedTherapeuticGames extends StatefulWidget {
 }
 
 class _SelectedTherapeuticGamesState extends State<SelectedTherapeuticGames> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> mockQuestions = [
+    'Physical reactions: What physical sensations did you experience? For example, tension in your shoulders, a racing heartbeat, dry mouth.',
+    'Emotions: What emotions arose? For instance, fear, joy, anxiety',
+    'Thoughts: What thoughts came to mind?',
+  ];
+  List<TherapeuticGameQuestion> questions = [];
+  String goal =
+      'The goal of the game, "Reactive Response," is to develop awareness of your reactions to various situations and learn to recognize automatic physical, emotional, and cognitive responses.';
+  String description =
+      'The player draws a card with a situation description. The goal is to imagine being in that situation and, as quickly as possible (within 1-2 minutes), describe three types of responses:';
+  // List<TherapeuticGameQuestion> sortNotExampleQuestions() {
+  //   for (var i in widget.game.questions) {
+  //     if (!i.isExample) {
+  //       notExampleQuestions.add(i);
+  //     }
+  //   }
+  //   return notExampleQuestions;
+  // }
 
-  List<TherapeuticGameQuestion> sortNotExampleQuestions() {
-    List<TherapeuticGameQuestion> notExampleQuestions = [];
+  @override
+  void initState() {
+    super.initState();
+    Logger.i('widget.game.questions: ${widget.game.questions.length}');
 
-    for (var i in widget.game.questions) {
-      if (!i.isExample) {
-        notExampleQuestions.add(i);
+    /// TODO: убрать весь этот код, когда будут приходить данные с бекенда
+    if (widget.game.questions.isNotEmpty) {
+      questions = widget.game.questions;
+    } else {
+      for (int k = 0; k < mockQuestions.length; k++) {
+        questions.add(TherapeuticGameQuestion(
+          id: k,
+          question: mockQuestions[k],
+          isExample: false,
+          gameId: widget.game.id,
+          createdAt: DateTime.now().toIso8601String(),
+        ));
       }
     }
-    return notExampleQuestions;
+    if (!widget.game.description.contains('Lorem ipsum dolor sit amet')) {
+      description = widget.game.description;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<TherapeuticGameQuestion> filteredQuestions = sortNotExampleQuestions();
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-          icon: SvgPicture.asset('assets/icons/hamburger.svg'),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      appBar: AppBarGame(title: widget.game.title, scaffoldKey: scaffoldKey),
+      drawer: const CustomDrawer(),
+      bottomNavigationBar: BottomBarGame(
+        onNextButtonPressed: () {},
       ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: const CustomDrawer(),
-      ),
-      body: Container(
-        padding: getMarginOrPadding(
-          top: 50,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: getMarginOrPadding(
-                right: 16,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: getMarginOrPadding(
+            top: 10,
+            left: 16,
+            right: 16,
+            bottom: 50,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Description',
+                style: AppText.text20,
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Five\nQuestions',
-                        style: TextStyle(
-                          fontFamily: 'regular',
-                          color: Color(0xFF000000),
-                          fontWeight: FontWeight.w700,
-                          height: 1,
-                          fontSize: 28,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+              Gap(10.h),
+              Text(
+                description,
+                style: AppText.text14,
+              ),
+              Gap(30.h),
+              ...List.generate(
+                questions.length,
+                (index) => Padding(
+                  padding: EdgeInsets.only(
+                      bottom: index != questions.length - 1 ? 15.h : 0),
+                  child: QuestionItem(
+                    question: questions[index].question,
+                    index: index,
                   ),
-                ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 50.h,
-            ),
-            Padding(
-              padding: getMarginOrPadding(horizontal: 16),
-              child: Text(
-                'Goal: to counter distorted thoughts through step-by-step self-analysis.',
-                style: TextStylesManager.headerMain.copyWith(height: 23.2 / 20),
+              Gap(20.h),
+              const Text(
+                'Game Objective',
+                style: AppText.text20,
+              ),
+              Gap(10.h),
+              Text(
+                goal,
+                style: AppText.text14,
                 textAlign: TextAlign.center,
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: filteredQuestions.length, // Use filtered list
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 31.h,
-                          height: 31.h,
-                          decoration: BoxDecoration(
-                            color: StyleManager.mainColor.withOpacity(0.2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${index + 1}',
-                              style: TextStylesManager.headerMainWhite.copyWith(
-                                color: StyleManager.mainColor,
-                                height: 23.2 / 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            filteredQuestions[index]
-                                .question, // Use filtered list
-                            style: TextStylesManager.standartMain.copyWith(
-                              height: 20 / 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => SizedBox(height: 10.h),
-              ),
-            ),
-            CustomElevatedButton(onPressed: () {}, text: 'EXAMPLE'),
-            SizedBox(
-              height: 250.h,
-            ),
-            Container(
-              padding: getMarginOrPadding(horizontal: 16),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomBackButton(),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 50.h,
-            )
-          ],
+              Gap(30.h),
+            ],
+          ),
         ),
       ),
     );

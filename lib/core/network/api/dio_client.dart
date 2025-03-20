@@ -14,14 +14,12 @@ class DioClient {
   }
 
   Options getOptions() {
+    final tokenStorage = Get.find<TokenStorage>();
     return Options(
       headers: {
         'Content-type': 'application/json',
-        ...Get.find<TokenStorage>().acsessToken.isNotEmpty
-            ? {
-                'Authorization':
-                    'Bearer ${Get.find<TokenStorage>().acsessToken}'
-              }
+        ...tokenStorage.acsessToken.isNotEmpty
+            ? {'Authorization': 'Bearer ${tokenStorage.acsessToken}'}
             : {},
       },
     );

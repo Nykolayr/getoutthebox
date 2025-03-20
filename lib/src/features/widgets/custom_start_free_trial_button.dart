@@ -19,12 +19,11 @@ class CustomStartFreeTrialButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  child: SvgPicture.asset(
+              SvgPicture.asset(
                 'assets/icons/lock2.svg',
                 width: 20,
                 height: 20,
-              )),
+              ),
               const SizedBox(
                 width: 5,
               ),

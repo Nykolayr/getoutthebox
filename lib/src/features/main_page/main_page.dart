@@ -104,7 +104,8 @@ class _MainPageState extends State<MainPage> {
                         title: 'Art materials\n& Affirmations',
                         icon: SvgPicture.asset(
                           'assets/main_page/1.svg',
-                          color: Colors.transparent,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black, BlendMode.srcIn),
                         ),
                         forwardIcon:
                             SvgPicture.asset('assets/icons/forward.svg'),
@@ -134,7 +135,8 @@ class _MainPageState extends State<MainPage> {
                         title: 'Everyday\nPractice',
                         icon: SvgPicture.asset(
                           'assets/main_page/1.svg',
-                          color: Colors.transparent,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black, BlendMode.srcIn),
                         ),
                         forwardIcon:
                             SvgPicture.asset('assets/icons/forward.svg'),

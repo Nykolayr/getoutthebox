@@ -255,7 +255,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               width: 20,
                               height: 20,
                               fit: BoxFit.contain,
-                              color: StyleManager.grayColor,
+                              colorFilter: const ColorFilter.mode(
+                                  StyleManager.grayColor, BlendMode.srcIn),
                             )
                           : Image.asset(
                               'assets/icons/eye_locked.png',
@@ -309,7 +310,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               width: 20,
                               height: 20,
                               fit: BoxFit.contain,
-                              color: StyleManager.grayColor,
+                              colorFilter: const ColorFilter.mode(
+                                  StyleManager.grayColor, BlendMode.srcIn),
                             )
                           : Image.asset(
                               'assets/icons/eye_locked.png',

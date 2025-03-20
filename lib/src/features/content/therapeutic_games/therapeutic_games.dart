@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -111,6 +112,11 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                           return GestureDetector(
                             onTap: () {
                               if (games[index].isFree) {
+                                Logger.i(
+                                    'games[index].toJson(): ${games[index].toJson()}');
+                                // TODO: добавить блок для получения игры по id
+                                // bloc.add(GetTherapeuticGameById(
+                                //     id: games[index].id));
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -123,8 +129,12 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                             child: GameCardWidget(
                               title: games[index].title,
                               pathImage: games[index].category.icon,
+                              isFree: games[index].isFree,
                               onPressed: () {
                                 if (games[index].isFree) {
+                                  // TODO: добавить блок для получения игры по id
+                                  // bloc.add(GetTherapeuticGameById(
+                                  //     id: games[index].id));
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -136,7 +146,6 @@ class _TherapeuticGamesState extends State<TherapeuticGames> {
                                   );
                                 }
                               },
-                              haveAccess: games[index].isFree,
                             ),
                           );
                         },

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 
@@ -8,18 +7,17 @@ class GameCardWidget extends StatelessWidget {
   final String title;
   final String pathImage;
   final void Function() onPressed;
-  final bool haveAccess;
+  final bool isFree;
 
   const GameCardWidget(
       {super.key,
       required this.title,
       required this.pathImage,
       required this.onPressed,
-      required this.haveAccess});
+      this.isFree = true});
 
   @override
   Widget build(BuildContext context) {
-    Logger.i('pathImage: $pathImage');
     return GestureDetector(
       onTap: onPressed,
       child: Stack(

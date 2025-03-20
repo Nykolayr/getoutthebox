@@ -19,6 +19,9 @@ class StyleManager {
   static const Color lightPurpleColor = Color(0xFF7A53A7);
   static const Color errorColor = Color(0xFFFF2D55);
   static const Color darkGrey = Color(0xFFD1D1D6);
+  static const Color bgBlockColor = Color(0xFFF6F6F6);
+  static const Color yellowColor = Color(0xFFF9B801);
+  static const Color purpleColor = Color(0xFF7A51EC);
 }
 
 class TextStylesManager {

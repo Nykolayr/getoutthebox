@@ -26,7 +26,8 @@ class SubscriptionScreen extends StatelessWidget {
                       'assets/icons/hamburger.svg',
                       width: 20.0,
                       height: 20.0,
-                      color: Colors.black,
+                      colorFilter:
+                          const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),

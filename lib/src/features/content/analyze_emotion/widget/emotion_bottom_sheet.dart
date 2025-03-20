@@ -179,7 +179,7 @@ class _EmotionBottomSheetState extends State<EmotionBottomSheet> {
                             onPressed: () {
                               openNextBottomSheet(context);
                             },
-                            haveAccess: games[index]['haveAccess'],
+                            isFree: games[index]['haveAccess'],
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {

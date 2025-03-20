@@ -18,7 +18,9 @@ class AnalyzeCardEmotion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: haveAccess ? onPressed : null, // Обрабатываем клик только если есть доступ
+      onTap: haveAccess
+          ? onPressed
+          : null, // Обрабатываем клик только если есть доступ
       child: Container(
         padding: getMarginOrPadding(all: 16),
         decoration: BoxDecoration(
@@ -33,8 +35,8 @@ class AnalyzeCardEmotion extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStylesManager.standartMain.copyWith(
-                      fontWeight: FontWeight.w500),
+                  style: TextStylesManager.standartMain
+                      .copyWith(fontWeight: FontWeight.w500),
                 ),
               ],
             ),

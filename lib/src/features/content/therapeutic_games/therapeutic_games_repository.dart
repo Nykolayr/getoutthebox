@@ -9,7 +9,7 @@ class TherapeuticGamesRepository {
   static TherapeuticGamesRepository? _instance;
   late final Api apiService;
   List<TherapeuticGame> therapeuticGames = [];
-
+  TherapeuticGame therapeuticGame = TherapeuticGame.initial();
   // Приватный конструктор
   TherapeuticGamesRepository._() {
     apiService = Get.find<Api>();
@@ -27,10 +27,28 @@ class TherapeuticGamesRepository {
     return _instance!;
   }
 
+  /// Получение терапевтической игры по id
+  Future<String> getGameById(String id) async {
+    therapeuticGame = therapeuticGames.firstWhere((game) => game.id == id);
+    final response = await apiService.getQuestionsApi(id);
+    if (response is ResSuccess) {
+      Logger.i('response: ${response.data}');
+      List<TherapeuticGameQuestion> questions = [];
+      for (var question in response.data) {
+        questions.add(TherapeuticGameQuestion.fromJson(question));
+      }
+      therapeuticGame.copyWith(questions: questions);
+      return '';
+    } else if (response is ResError) {
+      return response.errorMessage;
+    }
+    return '';
+  }
+
   /// Получение списка терапевтических игр
   Future<String> getGames() async {
     try {
-      final response = await apiService.getGames();
+      final response = await apiService.getGamesApi();
       if (response is ResSuccess) {
         Logger.i('response: ${response.data.length}');
         therapeuticGames = (response.data as List)

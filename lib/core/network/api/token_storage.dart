@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenStorage {
-  final String acsessToken;
-  final String refreshToken;
+  String acsessToken;
+  String refreshToken;
 
   TokenStorage(this.acsessToken, this.refreshToken);
 
@@ -17,21 +17,27 @@ class TokenStorage {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('acsessToken', acsessToken);
     await prefs.setString('refreshToken', refreshToken);
+    this.acsessToken = acsessToken;
+    this.refreshToken = refreshToken;
   }
 
   Future<String> getAcsessToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('acsessToken') ?? '';
+    acsessToken = prefs.getString('acsessToken') ?? '';
+    return acsessToken;
   }
 
   Future<String> getRefreshToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('refreshToken') ?? '';
+    refreshToken = prefs.getString('refreshToken') ?? '';
+    return refreshToken;
   }
 
   Future<void> deleteTokens() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('acsessToken');
     await prefs.remove('refreshToken');
+    acsessToken = '';
+    refreshToken = '';
   }
 }

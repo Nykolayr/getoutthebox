@@ -20,8 +20,8 @@ class ContactsHealth extends StatelessWidget {
   }
 
   _sendEmail() {
-    final Uri _emailLaunchUri = Uri(scheme: 'mailto', path: 'ivanov@gmail.com');
-    launch(_emailLaunchUri.toString());
+    final Uri emailLaunchUri = Uri(scheme: 'mailto', path: 'ivanov@gmail.com');
+    launch(emailLaunchUri.toString());
   }
 
   @override
@@ -41,7 +41,8 @@ class ContactsHealth extends StatelessWidget {
                       'assets/icons/hamburger.svg',
                       width: 20.0,
                       height: 20.0,
-                      color: Colors.black,
+                      colorFilter:
+                          const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                     ),
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),

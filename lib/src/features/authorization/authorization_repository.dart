@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:getoutofthebox/core/di/di.dart';
 import 'package:getoutofthebox/core/network/api_service.dart';
 import 'package:getoutofthebox/core/shared_prefs/shared_prefs_repo.dart';

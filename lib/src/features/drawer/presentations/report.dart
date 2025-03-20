@@ -39,7 +39,8 @@ class _ReportIssueState extends State<ReportIssue> {
                           'assets/icons/hamburger.svg',
                           width: 20.0.w,
                           height: 20.0.h,
-                          color: Colors.black,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black, BlendMode.srcIn),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),

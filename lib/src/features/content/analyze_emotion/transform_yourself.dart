@@ -11,7 +11,7 @@ import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
 class TransformYourself extends StatefulWidget {
-  TransformYourself({super.key});
+  const TransformYourself({super.key});
 
   @override
   State<TransformYourself> createState() => _TransformYourselfState();
@@ -92,7 +92,10 @@ class _TransformYourselfState extends State<TransformYourself> {
                   Text(
                     'How useful was it for you?',
                     style: TextStylesManager.smallBlackTitle,
-                  ),SizedBox(height: 16.h,),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
                   StarsFeedback(
                     onRatingChanged: (int rating) {
                       setState(() {
@@ -122,11 +125,11 @@ class _TransformYourselfState extends State<TransformYourself> {
                   const CustomBackButton(),
                   CustomNextButton(
                     onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const KeepChanging()),
-                        );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const KeepChanging()),
+                      );
                     },
                   ),
                 ],

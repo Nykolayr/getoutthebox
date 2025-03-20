@@ -16,7 +16,6 @@ class GoogleAuthService {
         final idToken = googleSignInAuthentication.idToken;
         if (idToken != null) {
           final email = googleSignInAccount.email;
-          Logger.d("Success GoogleSignInAccount $email $idToken");
           final ResponseApi res =
               await Api().loginViaGoogle(email, fcmToken: idToken);
           if (res is ResSuccess) {

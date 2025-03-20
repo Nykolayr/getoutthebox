@@ -11,7 +11,7 @@ import 'package:getoutofthebox/src/features/authorization/authorization_page.dar
 import 'package:getoutofthebox/src/features/authorization/authorization_repository.dart';
 import 'package:getoutofthebox/src/features/authorization/bloc/authorization_bloc.dart';
 import 'package:getoutofthebox/src/features/check_auth/check_auth_page.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/analyze_emotion.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/therapeutic_games/therapeutic_games.dart';
 import 'package:getoutofthebox/src/features/drawer/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:getoutofthebox/src/features/drawer/bloc/report_bloc/report_bloc.dart';
