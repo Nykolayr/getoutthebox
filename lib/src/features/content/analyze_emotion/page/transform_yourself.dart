@@ -27,11 +27,10 @@ class _TransformYourselfState extends State<TransformYourself> {
   int score = 0;
   final bloc = Get.find<EmotionBloc>();
   int index = 0;
-
+  bool isBegin = true;
   @override
   void initState() {
     super.initState();
-    updateTransform();
   }
 
   void updateTransform() {
@@ -103,9 +102,14 @@ class _TransformYourselfState extends State<TransformYourself> {
             Padding(
               padding: getMarginOrPadding(horizontal: 8),
               child: RefreshWidget(
-                title: TransformModel.getTransforms()[index].title,
-                description: TransformModel.getTransforms()[index].description,
+                title: isBegin
+                    ? 'Transform yourself'
+                    : TransformModel.getTransforms()[index].title,
+                description: isBegin
+                    ? ''
+                    : TransformModel.getTransforms()[index].description,
                 onRefresh: () {
+                  isBegin = false;
                   updateTransform();
                 },
               ),
@@ -114,22 +118,24 @@ class _TransformYourselfState extends State<TransformYourself> {
               padding: getMarginOrPadding(horizontal: 16, top: 30),
               child: Column(
                 children: [
-                  Text(
-                    'How useful was it for you?',
-                    style: TextStylesManager.smallBlackTitle,
-                  ),
+                  // Text(
+                  //   'How useful was it for you?',
+                  //   style: TextStylesManager.smallBlackTitle,
+                  // ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  StarsFeedback(
-                    rating: score,
-                    onRatingChanged: (int stars) {
-                      setState(() {
-                        score = stars;
-                      });
-                      bloc.add(AddStars(stars: stars));
-                    },
-                  ),
+                  // StarsFeedback(
+                  //   rating: score,
+                  //   onRatingChanged: (int stars) {
+                  //     if (!isBegin) {
+                  //       setState(() {
+                  //         score = stars;
+                  //       });
+                  //       bloc.add(AddStars(stars: stars));
+                  //     }
+                  //   },
+                  // ),
                 ],
               ),
             ),

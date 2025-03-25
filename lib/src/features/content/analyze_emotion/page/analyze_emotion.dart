@@ -29,15 +29,15 @@ class AnalyzeEmotion extends StatefulWidget {
 class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final bloc = Get.find<EmotionBloc>();
+  bool isBegin = true;
   int index = 0;
 
   @override
   void initState() {
     super.initState();
-
     bloc.add(GetEmotions());
     bloc.add(GetTrigers());
-    updateTrigers();
+    // updateTrigers();
   }
 
   void updateTrigers() {
@@ -111,9 +111,14 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                   Padding(
                     padding: getMarginOrPadding(horizontal: 8),
                     child: RefreshWidget(
-                      title: TrigersModel.getTrigers()[index].title,
-                      description: TrigersModel.getTrigers()[index].description,
+                      title: isBegin
+                          ? 'Explore the triggers'
+                          : TrigersModel.getTrigers()[index].title,
+                      description: isBegin
+                          ? ''
+                          : TrigersModel.getTrigers()[index].description,
                       onRefresh: () {
+                        isBegin = false;
                         updateTrigers();
                       },
                     ),
@@ -122,11 +127,13 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                   Padding(
                     padding: getMarginOrPadding(horizontal: 8),
                     child: AnalyzeCardEmotion(
-                      title: 'Explore the triggers',
+                      title: 'Choose your emotion',
                       onPressed: () {
-                        openEmotionBottomSheet(context);
+                        if (!isBegin) {
+                          openEmotionBottomSheet(context);
+                        }
                       },
-                      haveAccess: true,
+                      haveAccess: isBegin,
                     ),
                   ),
                   const Spacer(),

@@ -31,11 +31,11 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
   final bloc = Get.find<EmotionBloc>();
   int indexCognitive = 0;
   int indexExperience = 0;
+  bool isBegin = true;
 
   @override
   void initState() {
     super.initState();
-    updateCognitive();
   }
 
   void updateCognitive() {
@@ -115,10 +115,15 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                 Padding(
                   padding: getMarginOrPadding(horizontal: 8, bottom: 30),
                   child: RefreshWidget(
-                    title: CognitiveModel.getCognitive()[indexCognitive].title,
-                    description: CognitiveModel.getCognitive()[indexCognitive]
-                        .description,
+                    title: isBegin
+                        ? 'Cognitive distortions'
+                        : CognitiveModel.getCognitive()[indexCognitive].title,
+                    description: isBegin
+                        ? ''
+                        : CognitiveModel.getCognitive()[indexCognitive]
+                            .description,
                     onRefresh: () {
+                      isBegin = false;
                       updateCognitive();
                     },
                   ),
