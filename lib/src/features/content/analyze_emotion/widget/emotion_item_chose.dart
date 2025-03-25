@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 
 class EmotionItemChoose extends StatelessWidget {
   final EmotionModel emotion;

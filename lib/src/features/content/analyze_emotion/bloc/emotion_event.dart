@@ -22,12 +22,15 @@ class ChangeSelectedExperience extends EmotionEvent {
 
 /// Добавление посещения в список
 class AddInnerWork extends EmotionEvent {
-  final DateTime date;
-  AddInnerWork({required this.date});
+  final InWorkModel innerWork;
+  AddInnerWork({required this.innerWork});
 }
 
 /// Удаление посещения из списка
 class RemoveInnerWork extends EmotionEvent {
-  final DateTime date;
-  RemoveInnerWork({required this.date});
+  final String id;
+  RemoveInnerWork({required this.id});
 }
+
+/// Получение списка триггеров
+class GetTrigers extends EmotionEvent {}

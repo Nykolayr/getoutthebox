@@ -27,17 +27,6 @@ class _MyInnerWorkState extends State<MyInnerWork> {
   @override
   void initState() {
     super.initState();
-    bloc.add(AddInnerWork(
-        date: DateTime.now().subtract(const Duration(days: 5, hours: 2))));
-    bloc.add(AddInnerWork(
-        date: DateTime.now().subtract(const Duration(days: 4, hours: 3))));
-    bloc.add(AddInnerWork(
-        date: DateTime.now().subtract(const Duration(days: 3, hours: 1))));
-    bloc.add(AddInnerWork(
-        date: DateTime.now().subtract(const Duration(days: 2, hours: 4))));
-    bloc.add(AddInnerWork(
-        date: DateTime.now().subtract(const Duration(days: 1, hours: 12))));
-    bloc.add(AddInnerWork(date: DateTime.now()));
   }
 
   @override
@@ -102,9 +91,9 @@ class _MyInnerWorkState extends State<MyInnerWork> {
                     ),
                   ),
                   const Gap(20),
-                  ...state.innerWork.map((e) => DateItem(
-                      date: e,
-                      onRemove: () => bloc.add(RemoveInnerWork(date: e)))),
+                  ...state.innerWorks.map((e) => DateItem(
+                      innerWork: e,
+                      onRemove: () => bloc.add(RemoveInnerWork(id: e.id)))),
                 ],
               ),
             ),

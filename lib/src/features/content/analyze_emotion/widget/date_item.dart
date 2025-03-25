@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
 import 'package:intl/intl.dart';
 
 class DateItem extends StatelessWidget {
-  final DateTime date;
+  final InWorkModel innerWork;
   final VoidCallback onRemove;
-  const DateItem({super.key, required this.date, required this.onRemove});
+  const DateItem({super.key, required this.innerWork, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class DateItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                DateFormat('MMMM d,yyyy').format(date),
+                DateFormat('MMMM d,yyyy').format(innerWork.date),
                 style: AppText.text16.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -38,7 +39,7 @@ class DateItem extends StatelessWidget {
                 ),
               ),
               Text(
-                DateFormat('HH:mm').format(date),
+                DateFormat('HH:mm').format(innerWork.date),
                 style: AppText.text16.copyWith(
                   fontWeight: FontWeight.w600,
                   color: StyleManager.grayColor,

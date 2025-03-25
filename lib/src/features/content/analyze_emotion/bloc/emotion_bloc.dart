@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_games_model.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_games_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_repositories.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
 
 part 'emotion_event.dart';
 part 'emotion_state.dart';
@@ -16,20 +18,35 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<ChangeSelectedExperience>(_onChangeSelectedExperience);
     on<AddInnerWork>(_onAddInnerWork);
     on<RemoveInnerWork>(_onRemoveInnerWork);
+    on<GetTrigers>(_onGetTrigers);
+  }
+
+  /// Получение списка триггеров
+  Future<void> _onGetTrigers(
+      GetTrigers event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final answer = await Get.find<EmotionRepository>().getTrigers();
+    emit(state.copyWith(isLoading: false));
+    if (answer.isEmpty) {
+      emit(state.copyWith(trigers: Get.find<EmotionRepository>().trigers));
+    } else {
+      emit(state.copyWith(errorMessage: answer));
+    }
   }
 
   /// Добавление посещения в список
   Future<void> _onAddInnerWork(
       AddInnerWork event, Emitter<EmotionState> emit) async {
-    emit(state.copyWith(innerWork: [...state.innerWork, event.date]));
+    emit(state.copyWith(innerWorks: [...state.innerWorks]));
   }
 
   /// Удаление посещения из списка
   Future<void> _onRemoveInnerWork(
       RemoveInnerWork event, Emitter<EmotionState> emit) async {
     emit(state.copyWith(
-        innerWork:
-            state.innerWork.where((date) => date != event.date).toList()));
+        innerWorks: state.innerWorks
+            .where((innerWork) => innerWork.id != event.id)
+            .toList()));
   }
 
   /// Изменение выбранного опыта

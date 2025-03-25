@@ -14,7 +14,16 @@ class GoogleAuthService {
         GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
         final idToken = googleSignInAuthentication.idToken;
+
         if (idToken != null) {
+          const int chunkSize = 300; // Размер части
+          for (int i = 0; i < idToken.length; i += chunkSize) {
+            print(idToken.substring(
+                i,
+                i + chunkSize > idToken.length
+                    ? idToken.length
+                    : i + chunkSize));
+          }
           final email = googleSignInAccount.email;
           final ResponseApi res =
               await Api().loginViaGoogle(email, fcmToken: idToken);

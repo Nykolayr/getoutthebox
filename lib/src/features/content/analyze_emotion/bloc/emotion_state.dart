@@ -9,7 +9,8 @@ class EmotionState extends Equatable {
   final List<String> experience;
   final int selectedExperience;
   final bool isChange;
-  final List<DateTime> innerWork;
+  final List<InWorkModel> innerWorks;
+  final List<TrigersModel> trigers;
   @override
   const EmotionState({
     required this.emotionGames,
@@ -20,7 +21,8 @@ class EmotionState extends Equatable {
     required this.experience,
     required this.selectedExperience,
     required this.isChange,
-    required this.innerWork,
+    required this.innerWorks,
+    required this.trigers,
   });
 
   factory EmotionState.initial() {
@@ -33,7 +35,8 @@ class EmotionState extends Equatable {
       experience: Get.find<EmotionRepository>().experience,
       selectedExperience: 0,
       isChange: false,
-      innerWork: const [],
+      innerWorks: const [],
+      trigers: Get.find<EmotionRepository>().trigers,
     );
   }
 
@@ -47,13 +50,15 @@ class EmotionState extends Equatable {
     List<String>? experience,
     int? selectedExperience,
     bool? isChange,
-    List<DateTime>? innerWork,
+    List<InWorkModel>? innerWorks,
+    List<TrigersModel>? trigers,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
             emotionGames != null && emotionGames != this.emotionGames ||
             emotions != null && emotions != this.emotions ||
-            innerWork != null && innerWork != this.innerWork;
+            innerWorks != null && innerWorks != this.innerWorks ||
+            trigers != null && trigers != this.trigers;
 
     return EmotionState(
       emotions: emotions ?? this.emotions,
@@ -64,7 +69,8 @@ class EmotionState extends Equatable {
       experience: experience ?? this.experience,
       selectedExperience: selectedExperience ?? this.selectedExperience,
       isChange: isChange ?? this.isChange,
-      innerWork: innerWork ?? this.innerWork,
+      innerWorks: innerWorks ?? this.innerWorks,
+      trigers: trigers ?? this.trigers,
     );
   }
 
@@ -78,6 +84,7 @@ class EmotionState extends Equatable {
         experience,
         selectedExperience,
         isChange,
-        innerWork,
+        innerWorks,
+        trigers,
       ];
 }
