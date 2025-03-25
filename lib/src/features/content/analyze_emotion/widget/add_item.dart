@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 
 class AddItem extends StatelessWidget {
   final String title;
-  const AddItem({super.key, required this.title});
+  final String answer;
+  const AddItem({super.key, required this.title, required this.answer});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +17,17 @@ class AddItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: StyleManager.blackColor.withOpacity(0.06),
       ),
-      child: Text(title,
-          style: AppText.text16.copyWith(fontWeight: FontWeight.w600)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: AppText.text16.copyWith(fontWeight: FontWeight.w600)),
+          if (answer.isNotEmpty) ...[
+            const Gap(5),
+            Text('note: $answer', style: AppText.text14),
+          ],
+        ],
+      ),
     );
   }
 }

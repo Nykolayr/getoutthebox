@@ -136,7 +136,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                         updateTrigers();
                         openNoteBottomSheet(
                           context: context,
-                          title: TrigersModel.getTrigers()[index].title,
+                          title: 'Comment on your trigger',
                           type: NoteType.triger,
                           index: index,
                           controller: controller,

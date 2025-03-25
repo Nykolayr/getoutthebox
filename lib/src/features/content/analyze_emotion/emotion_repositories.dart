@@ -40,13 +40,13 @@ class EmotionRepository {
   void changeNote(String note, NoteType type, int index) {
     switch (type) {
       case NoteType.triger:
-        selectedInnerWork.trigers[index].note = note;
+        selectedInnerWork.trigers.last.note = note;
         break;
       case NoteType.cognitive:
-        selectedInnerWork.cognitive[index].note = note;
+        selectedInnerWork.cognitive.last.note = note;
         break;
       case NoteType.transform:
-        selectedInnerWork.transforms[index].note = note;
+        selectedInnerWork.transforms.last.note = note;
         break;
     }
     updateSelectedInnerWork();
@@ -63,7 +63,6 @@ class EmotionRepository {
   int addTrigers(int index) {
     TrigersModel triger = TrigersModel.getTrigers()[index];
     selectedInnerWork.trigers.add(triger);
-    Logger.i('addTrigers: ${selectedInnerWork.trigers.length}');
     updateSelectedInnerWork();
     return selectedInnerWork.trigers.length - 1;
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+// import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 
 class AddWidget extends StatelessWidget {
@@ -18,9 +18,9 @@ class AddWidget extends StatelessWidget {
         ),
         child: const Row(
           children: [
-            Icon(Icons.add, size: 13),
-            Gap(5),
-            Text('Add', style: AppText.text14),
+            // Icon(Icons.add, size: 13),
+            // Gap(5),
+            Text('Make changes', style: AppText.text14),
           ],
         ),
       ),

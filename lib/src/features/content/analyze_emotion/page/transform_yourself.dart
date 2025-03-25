@@ -127,7 +127,7 @@ class _TransformYourselfState extends State<TransformYourself> {
                   updateTransform();
                   openNoteBottomSheet(
                     context: context,
-                    title: TransformModel.getTransforms()[index].title,
+                    title: 'Your next step',
                     type: NoteType.transform,
                     index: index,
                     controller: controller,

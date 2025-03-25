@@ -141,7 +141,7 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                       openNoteBottomSheet(
                         context: context,
                         title:
-                            CognitiveModel.getCognitive()[indexCognitive].title,
+                            'How the distortion is connected to your trigger',
                         type: NoteType.cognitive,
                         index: indexCognitive,
                         controller: controller,
