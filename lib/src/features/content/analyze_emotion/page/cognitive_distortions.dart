@@ -7,18 +7,34 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/expiriens_item.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
-class CognitiveDistortions extends StatelessWidget {
+class CognitiveDistortions extends StatefulWidget {
   final bool isBack;
-  CognitiveDistortions({super.key, this.isBack = false});
 
+  const CognitiveDistortions({super.key, this.isBack = false});
+
+  @override
+  State<CognitiveDistortions> createState() => _CognitiveDistortionsState();
+}
+
+class _CognitiveDistortionsState extends State<CognitiveDistortions> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int index = 0;
+  @override
+  void initState() {
+    super.initState();
+    index = getRandomNumberExcluding([]);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +102,19 @@ class CognitiveDistortions extends StatelessWidget {
                 ),
                 Padding(
                   padding: getMarginOrPadding(horizontal: 8, bottom: 30),
-                  child: AnalyzeCardEmotion(
-                      title: 'Spot the distortion',
-                      onPressed: () {},
-                      haveAccess: false),
+                  child: RefreshWidget(
+                    title: CognitiveModel.getCognitive()[index].title,
+                    description:
+                        CognitiveModel.getCognitive()[index].description,
+                    onRefresh: () {
+                      List<int> excludedNumbers = state
+                          .selectedInnerWork.cognitive
+                          .map((e) => e.id)
+                          .toList();
+                      index = getRandomNumberExcluding(excludedNumbers);
+                      setState(() {});
+                    },
+                  ),
                 ),
                 Center(
                   child: Column(
@@ -105,12 +130,14 @@ class CognitiveDistortions extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
-                            state.experience.length,
+                            ExperienceModel.getExperiences().length,
                             (index) => ExpiriensItem(
                               key: UniqueKey(),
-                              title: state.experience[index],
+                              title:
+                                  ExperienceModel.getExperiences()[index].title,
                               id: index,
-                              selectedId: state.selectedExperience,
+                              selectedId:
+                                  state.selectedInnerWork.cognitive[index].id,
                               onPressed: (id) {
                                 bloc.add(ChangeSelectedExperience(id: id));
                               },
@@ -122,7 +149,7 @@ class CognitiveDistortions extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                if (!isBack)
+                if (!widget.isBack)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -139,7 +166,7 @@ class CognitiveDistortions extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CustomBackButton(),
-                      if (!isBack)
+                      if (!widget.isBack)
                         CustomNextButton(
                           onPressed: () {
                             Navigator.push(

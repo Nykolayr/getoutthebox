@@ -5,13 +5,13 @@ class EmotionState extends Equatable {
   final bool isLoading;
   final String errorMessage;
   final bool isListChange;
-  final List<String> experience;
-  final int selectedExperience;
+  final List<ExperienceModel> experience;
   final bool isChange;
   final List<InWorkModel> innerWorks;
-  final List<TrigersModel> trigers;
-  final TrigersModel selectedTriger;
   final InWorkModel selectedInnerWork;
+  final int indexTrigers;
+  final int indexTransform;
+  final int indexCognitive;
 
   @override
   const EmotionState({
@@ -20,12 +20,12 @@ class EmotionState extends Equatable {
     required this.errorMessage,
     required this.isListChange,
     required this.experience,
-    required this.selectedExperience,
     required this.isChange,
     required this.innerWorks,
-    required this.trigers,
-    required this.selectedTriger,
     required this.selectedInnerWork,
+    required this.indexTrigers,
+    required this.indexTransform,
+    required this.indexCognitive,
   });
 
   factory EmotionState.initial() {
@@ -34,13 +34,13 @@ class EmotionState extends Equatable {
       errorMessage: '',
       isListChange: false,
       emotionGames: Get.find<EmotionRepository>().emotionGames,
-      experience: Get.find<EmotionRepository>().experience,
-      selectedExperience: 0,
       isChange: false,
       innerWorks: Get.find<EmotionRepository>().inWorks,
-      trigers: Get.find<EmotionRepository>().trigers,
-      selectedTriger: TrigersModel.init(),
       selectedInnerWork: InWorkModel.init(0),
+      experience: ExperienceModel.getExperiences(),
+      indexTrigers: 0,
+      indexTransform: 0,
+      indexCognitive: 0,
     );
   }
 
@@ -49,20 +49,19 @@ class EmotionState extends Equatable {
     String? errorMessage,
     bool? isListChange,
     List<EmotionGamesModel>? emotionGames,
-    List<String>? experience,
-    int? selectedExperience,
     bool? isChange,
     List<InWorkModel>? innerWorks,
-    List<TrigersModel>? trigers,
-    TrigersModel? selectedTriger,
     InWorkModel? selectedInnerWork,
+    List<ExperienceModel>? experience,
+    int? indexTrigers,
+    int? indexTransform,
+    int? indexCognitive,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
             emotionGames != null && emotionGames != this.emotionGames ||
             innerWorks != null && innerWorks != this.innerWorks ||
-            trigers != null && trigers != this.trigers ||
-            selectedTriger != null && selectedTriger != this.selectedTriger ||
+            experience != null && experience != this.experience ||
             selectedInnerWork != null &&
                 selectedInnerWork != this.selectedInnerWork;
 
@@ -72,12 +71,12 @@ class EmotionState extends Equatable {
       isListChange: shouldToggleList ? !this.isListChange : this.isListChange,
       emotionGames: emotionGames ?? this.emotionGames,
       experience: experience ?? this.experience,
-      selectedExperience: selectedExperience ?? this.selectedExperience,
       isChange: isChange ?? this.isChange,
       innerWorks: innerWorks ?? this.innerWorks,
-      trigers: trigers ?? this.trigers,
-      selectedTriger: selectedTriger ?? this.selectedTriger,
       selectedInnerWork: selectedInnerWork ?? this.selectedInnerWork,
+      indexTrigers: indexTrigers ?? this.indexTrigers,
+      indexTransform: indexTransform ?? this.indexTransform,
+      indexCognitive: indexCognitive ?? this.indexCognitive,
     );
   }
 
@@ -88,11 +87,11 @@ class EmotionState extends Equatable {
         isListChange,
         emotionGames,
         experience,
-        selectedExperience,
         isChange,
         innerWorks,
-        trigers,
-        selectedTriger,
         selectedInnerWork,
+        indexTrigers,
+        indexTransform,
+        indexCognitive,
       ];
 }

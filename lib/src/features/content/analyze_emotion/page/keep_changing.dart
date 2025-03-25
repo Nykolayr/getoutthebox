@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/cognitive_distortions.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/my_inner_work.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/add_item.dart';
@@ -108,7 +108,12 @@ class _KeepChangingfState extends State<KeepChanging> {
                           children: [
                             const Text('Triggers:', style: AppText.text20),
                             AddWidget(onPressed: () {
-                              openNextBottomSheet(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AnalyzeEmotion(isBack: true)),
+                              );
                             }),
                           ],
                         ),
@@ -137,13 +142,20 @@ class _KeepChangingfState extends State<KeepChanging> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        CognitiveDistortions(isBack: true)),
+                                        const CognitiveDistortions(
+                                            isBack: true)),
                               );
                             }),
                           ],
                         ),
                         const Gap(15),
-                        AddItem(title: state.selectedInnerWork.experience),
+                        ...List.generate(
+                          state.selectedInnerWork.cognitive.length,
+                          (index) => AddItem(
+                            title:
+                                state.selectedInnerWork.cognitive[index].title,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -160,9 +172,13 @@ class _KeepChangingfState extends State<KeepChanging> {
                           ],
                         ),
                         const Gap(15),
-                        const AddItem(title: '1. Identify Negative Thoughts'),
-                        const Gap(10),
-                        const AddItem(title: '2. Challenge Negative Thoughts'),
+                        ...List.generate(
+                          state.selectedInnerWork.transforms.length,
+                          (index) => AddItem(
+                            title:
+                                state.selectedInnerWork.transforms[index].title,
+                          ),
+                        ),
                       ],
                     ),
                   ),

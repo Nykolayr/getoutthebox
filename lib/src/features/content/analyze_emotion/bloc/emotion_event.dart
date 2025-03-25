@@ -55,3 +55,27 @@ class ChangeSelectedInnerWork extends EmotionEvent {
   final InWorkModel innerWork;
   ChangeSelectedInnerWork({required this.innerWork});
 }
+
+/// Добавление cognitive
+class AddCognitive extends EmotionEvent {
+  final CognitiveModel cognitive;
+  AddCognitive({required this.cognitive});
+}
+
+/// Изменение индекса тригера
+class ChangeIndexTrigers extends EmotionEvent {
+  final int index;
+  ChangeIndexTrigers({required this.index});
+}
+
+/// Изменение индекса трансформа
+class ChangeIndexTransform extends EmotionEvent {
+  final int index;
+  ChangeIndexTransform({required this.index});
+}
+
+/// Изменение индекса cognitive
+class ChangeIndexCognitive extends EmotionEvent {
+  final int index;
+  ChangeIndexCognitive({required this.index});
+}

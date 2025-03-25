@@ -2,8 +2,10 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/network/api/api.dart';
 import 'package:getoutofthebox/core/network/api/response_api.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_games_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
 
@@ -11,20 +13,9 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trige
 class EmotionRepository {
   static EmotionRepository? _instance;
   late final Api apiService;
-  List<EmotionModel> emotions = [];
   List<EmotionGamesModel> emotionGames = [];
-  List<TrigersModel> trigers = [];
-  EmotionModel emotion = EmotionModel.initial();
   List<InWorkModel> inWorks = [];
   InWorkModel selectedInnerWork = InWorkModel.init(0);
-  TrigersModel selectedTriger = TrigersModel.initial();
-  List<String> experience = [
-    'Never',
-    'Rarely',
-    'Sometimes',
-    'Often',
-    'Constantly',
-  ];
 
   // Приватный конструктор
   EmotionRepository._() {
@@ -43,27 +34,49 @@ class EmotionRepository {
     return _instance!;
   }
 
+  /// изменение inWorks
+  void updateSelectedInnerWork() {
+    final index = inWorks.indexWhere((e) => e.id == selectedInnerWork.id);
+    if (index != -1) {
+      inWorks[index] = selectedInnerWork;
+    }
+  }
+
   /// Изменение выбранного посещения
   void changeSelectedInnerWork(InWorkModel innerWork) {
     selectedInnerWork = innerWork;
   }
 
   /// Добавление звезды
-  void addStars(int stars) {
-    selectedInnerWork.stars = stars;
+  void addStars(int stars, int index) {
+    selectedInnerWork.transforms[index].rate = stars;
+    updateSelectedInnerWork();
   }
 
   /// Изменение выбранного опыта
-  void changeSelectedExperience(String experience) {
-    selectedInnerWork.experience = experience;
+  void changeSelectedExperience(ExperienceModel experience) {
+    if (selectedInnerWork.cognitive.any((e) => e.id == experience.id)) {
+      selectedInnerWork.cognitive
+          .firstWhere((e) => e.id == experience.id)
+          .experience = experience;
+    }
+    updateSelectedInnerWork();
   }
 
   /// добавление выбранного тригера
   void changeSelectedTriger(TrigersModel triger) {
-    selectedTriger = triger;
-    if (!selectedInnerWork.trigers.contains(triger)) {
+    if (selectedInnerWork.trigers.any((e) => e.id == triger.id)) {
       selectedInnerWork.trigers.add(triger);
     }
+    updateSelectedInnerWork();
+  }
+
+  /// Добавление cognitive
+  void addCognitive(CognitiveModel cognitive) {
+    if (selectedInnerWork.cognitive.any((e) => e.id == cognitive.id)) {
+      selectedInnerWork.cognitive.add(cognitive);
+    }
+    updateSelectedInnerWork();
   }
 
   /// Удаление посещения
@@ -78,25 +91,23 @@ class EmotionRepository {
   }
 
   /// Изменение выбранной эмоции
-  void changeSelectedEmotion(EmotionModel emotion) {
-    int index = selectedTriger.emotions
+  void changeSelectedEmotion(EmotionModel emotion, int id) {
+    int indexTriger =
+        selectedInnerWork.trigers.indexWhere((element) => element.id == id);
+    int indexEmotion = selectedInnerWork.trigers[indexTriger].emotions
         .indexWhere((element) => element.id == emotion.id);
-    selectedTriger.emotions[index] = emotion.copyWith(
-        isSelected: !selectedTriger.emotions[index].isSelected);
+    selectedInnerWork.trigers[indexTriger].emotions[indexEmotion] =
+        emotion.copyWith(
+            isSelected: !selectedInnerWork
+                .trigers[indexTriger].emotions[indexEmotion].isSelected);
   }
 
   /// Получение списка триггеров
   Future<String> getTrigers() async {
-    trigers.clear();
     try {
       final response = await apiService.getTrigersApi();
       if (response is ResSuccess) {
         Logger.i('getTrigers: ${response.data}');
-        trigers = (response.data as List)
-            .map((game) => TrigersModel.fromJson(game))
-            .toList()
-            .cast<TrigersModel>();
-        Logger.i('getTrigers length: ${trigers.length}');
         return '';
       } else if (response is ResError) {
         return response.errorMessage;
@@ -133,16 +144,10 @@ class EmotionRepository {
 
   /// Получение списка эмоций
   Future<String> getEmotions() async {
-    emotions.clear();
     try {
       final response = await apiService.getEmotionsApi();
       if (response is ResSuccess) {
         Logger.i('getEmotions: ${response.data.length}');
-        // emotions = (response.data as List)
-        //     .map((game) => EmotionModel.fromJson(game))
-        //     .toList()
-        //     .cast<EmotionModel>();
-        emotions = EmotionModel.getEmotions();
         return '';
       } else if (response is ResError) {
         return response.errorMessage;

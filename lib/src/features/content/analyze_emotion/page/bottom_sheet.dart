@@ -4,29 +4,28 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/show_modal_bottom.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/trigers_item.dart';
 
-void openNextBottomSheet(BuildContext context) {
-  final bloc = Get.find<EmotionBloc>();
-  showEmotionModalBottomSheet(
-    context: context,
-    title: 'Explore the triggers',
-    content: Column(
-      children: [
-        ...List.generate(
-          bloc.state.trigers.length,
-          (index) => TrigersItem(
-            title: bloc.state.trigers[index].title,
-            onTap: () {
-              bloc.add(ChangeSelectedTriger(triger: bloc.state.trigers[index]));
-              openEmotionBottomSheet(context);
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
+// void openNextBottomSheet(BuildContext context) {
+//   final bloc = Get.find<EmotionBloc>();
+//   showEmotionModalBottomSheet(
+//     context: context,
+//     title: 'Explore the triggers',
+//     content: Column(
+//       children: [
+//         ...List.generate(
+//           bloc.state.trigers.length,
+//           (index) => TrigersItem(
+//             title: bloc.state.trigers[index].title,
+//             onTap: () {
+//               bloc.add(ChangeSelectedTriger(triger: bloc.state.trigers[index]));
+//               openEmotionBottomSheet(context);
+//             },
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
 void openEmotionBottomSheet(
   BuildContext context,
@@ -42,10 +41,12 @@ void openEmotionBottomSheet(
         return Column(
           children: [
             ...List.generate(
-              state.selectedTriger.emotions.length,
+              state.selectedInnerWork.trigers[state.indexTrigers].emotions
+                  .length,
               (index) => EmotionItemChoose(
                 key: UniqueKey(),
-                emotion: state.selectedTriger.emotions[index],
+                emotion: state.selectedInnerWork.trigers[state.indexTrigers]
+                    .emotions[index],
                 onTap: (emotion) {
                   bloc.add(ChangeSelectedEmotion(emotion: emotion));
                 },

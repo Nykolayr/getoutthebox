@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/transform_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/drawer/widgets/stars_feedback.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
@@ -22,6 +24,15 @@ class TransformYourself extends StatefulWidget {
 class _TransformYourselfState extends State<TransformYourself> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int score = 0;
+  final bloc = Get.find<EmotionBloc>();
+  int index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    index = getRandomNumberExcluding([]);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +93,18 @@ class _TransformYourselfState extends State<TransformYourself> {
             ),
             Padding(
               padding: getMarginOrPadding(horizontal: 8),
-              child: AnalyzeCardEmotion(
-                  title: 'Step into change',
-                  onPressed: () {},
-                  haveAccess: true),
+              child: RefreshWidget(
+                title: TransformModel.getTransforms()[index].title,
+                description: TransformModel.getTransforms()[index].description,
+                onRefresh: () {
+                  List<int> excludedNumbers = bloc
+                      .state.selectedInnerWork.transforms
+                      .map((e) => e.id)
+                      .toList();
+                  index = getRandomNumberExcluding(excludedNumbers);
+                  setState(() {});
+                },
+              ),
             ),
             Padding(
               padding: getMarginOrPadding(horizontal: 16, top: 30),
@@ -103,7 +122,8 @@ class _TransformYourselfState extends State<TransformYourself> {
                       setState(() {
                         score = stars; // Обновляем кол-во звезд
                       });
-                      Get.find<EmotionBloc>().add(AddStars(stars: stars));
+                      bloc.add(AddStars(stars: stars));
+                      bloc.add(ChangeIndexTransform(index: index));
                     },
                   ),
                 ],

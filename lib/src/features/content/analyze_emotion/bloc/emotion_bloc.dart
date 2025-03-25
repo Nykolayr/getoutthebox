@@ -2,9 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_games_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_repositories.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
 
@@ -24,6 +26,36 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<NewInnerWork>(_onNewInnerWork);
     on<AddStars>(_onAddStars);
     on<ChangeSelectedInnerWork>(_onChangeSelectedInnerWork);
+    on<AddCognitive>(_onAddCognitive);
+    on<ChangeIndexTrigers>(_onChangeIndexTrigers);
+    on<ChangeIndexTransform>(_onChangeIndexTransform);
+    on<ChangeIndexCognitive>(_onChangeIndexCognitive);
+  }
+
+  /// Изменение индекса тригера
+  Future<void> _onChangeIndexTrigers(
+      ChangeIndexTrigers event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(indexTrigers: event.index));
+  }
+
+  /// Изменение индекса трансформа
+  Future<void> _onChangeIndexTransform(
+      ChangeIndexTransform event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(indexTransform: event.index));
+  }
+
+  /// Изменение индекса cognitive
+  Future<void> _onChangeIndexCognitive(
+      ChangeIndexCognitive event, Emitter<EmotionState> emit) async {
+    emit(state.copyWith(indexCognitive: event.index));
+  }
+
+  /// Добавление cognitive
+  Future<void> _onAddCognitive(
+      AddCognitive event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().addCognitive(event.cognitive);
+    emit(state.copyWith(
+        selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork));
   }
 
   /// Изменение выбранного посещения
@@ -35,7 +67,7 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
 
   /// Добавление звезды
   Future<void> _onAddStars(AddStars event, Emitter<EmotionState> emit) async {
-    Get.find<EmotionRepository>().addStars(event.stars);
+    Get.find<EmotionRepository>().addStars(event.stars, state.indexTransform);
 
     emit(state.copyWith(
         selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork));
@@ -54,7 +86,6 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
       ChangeSelectedTriger event, Emitter<EmotionState> emit) async {
     Get.find<EmotionRepository>().changeSelectedTriger(event.triger);
     emit(state.copyWith(
-        selectedTriger: event.triger,
         selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
         innerWorks: Get.find<EmotionRepository>().inWorks));
   }
@@ -66,7 +97,7 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     final answer = await Get.find<EmotionRepository>().getTrigers();
     emit(state.copyWith(isLoading: false));
     if (answer.isEmpty) {
-      emit(state.copyWith(trigers: Get.find<EmotionRepository>().trigers));
+      // emit(state.copyWith(trigers: Get.find<EmotionRepository>().trigers));
     } else {
       emit(state.copyWith(errorMessage: answer));
     }
@@ -91,17 +122,16 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     Get.find<EmotionRepository>()
         .changeSelectedExperience(state.experience[event.id]);
     emit(state.copyWith(
-        selectedExperience: event.id,
         selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork));
   }
 
   /// Изменение выбранной эмоции
   Future<void> _onChangeSelectedEmotion(
       ChangeSelectedEmotion event, Emitter<EmotionState> emit) async {
-    Get.find<EmotionRepository>().changeSelectedEmotion(event.emotion);
+    Get.find<EmotionRepository>()
+        .changeSelectedEmotion(event.emotion, state.selectedInnerWork.id);
     Logger.i('selectedTriger: ${event.emotion.isSelected}');
     emit(state.copyWith(
-        selectedTriger: Get.find<EmotionRepository>().selectedTriger,
         selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
         innerWorks: Get.find<EmotionRepository>().inWorks,
         isListChange: !state.isListChange));
@@ -129,7 +159,6 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     emit(state.copyWith(isLoading: false));
     if (answer.isEmpty) {
       emit(state.copyWith(
-          selectedTriger: Get.find<EmotionRepository>().selectedTriger,
           selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
           innerWorks: Get.find<EmotionRepository>().inWorks));
     } else {
