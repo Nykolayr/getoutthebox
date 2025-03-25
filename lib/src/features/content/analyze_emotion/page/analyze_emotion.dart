@@ -34,10 +34,17 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
   @override
   void initState() {
     super.initState();
-    index = getRandomNumberExcluding([]);
-    bloc.add(NewInnerWork());
+
     bloc.add(GetEmotions());
     bloc.add(GetTrigers());
+    updateTrigers();
+  }
+
+  void updateTrigers() {
+    List<int> excludedNumbers =
+        bloc.state.selectedInnerWork.trigers.map((e) => e.id).toList();
+    index = getRandomNumberExcluding(excludedNumbers);
+    bloc.add(ChangeIndexTrigers(index: index));
     setState(() {});
   }
 
@@ -107,12 +114,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                       title: TrigersModel.getTrigers()[index].title,
                       description: TrigersModel.getTrigers()[index].description,
                       onRefresh: () {
-                        List<int> excludedNumbers = state
-                            .selectedInnerWork.trigers
-                            .map((e) => e.id)
-                            .toList();
-                        index = getRandomNumberExcluding(excludedNumbers);
-                        setState(() {});
+                        updateTrigers();
                       },
                     ),
                   ),
@@ -122,7 +124,6 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                     child: AnalyzeCardEmotion(
                       title: 'Explore the triggers',
                       onPressed: () {
-                        bloc.add(ChangeIndexTrigers(index: index));
                         openEmotionBottomSheet(context);
                       },
                       haveAccess: true,
@@ -153,7 +154,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        CognitiveDistortions()),
+                                        const CognitiveDistortions()),
                               );
                             },
                           ),
@@ -171,7 +172,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
 /// случайное число, не включая в список исключенных чисел
 int getRandomNumberExcluding(List<int> excludedNumbers) {
   Random random = Random();
-  List<int> availableNumbers = List.generate(33, (index) => index + 1)
+  List<int> availableNumbers = List.generate(33, (index) => index)
     ..removeWhere((number) => excludedNumbers.contains(number));
 
   if (availableNumbers.isEmpty) {

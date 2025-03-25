@@ -44,6 +44,7 @@ class EmotionModel {
       'description': description,
       'cause': cause,
       'goal': goal,
+      'isSelected': isSelected,
     };
   }
 

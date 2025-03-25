@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -9,6 +8,7 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/cognitive_distortions.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/my_inner_work.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/add_item.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/add_widget.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/wrap_container_round.dart';
@@ -29,7 +29,6 @@ class KeepChanging extends StatefulWidget {
 class _KeepChangingfState extends State<KeepChanging> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final EmotionBloc bloc = Get.find<EmotionBloc>();
-  int score = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,6 @@ class _KeepChangingfState extends State<KeepChanging> {
         child: BlocBuilder<EmotionBloc, EmotionState>(
           bloc: bloc,
           builder: (context, state) {
-            Logger.i('selectedInnerWork: ${state.selectedInnerWork.toJson()}');
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -107,13 +105,14 @@ class _KeepChangingfState extends State<KeepChanging> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Triggers:', style: AppText.text20),
-                            AddWidget(onPressed: () {
-                              Navigator.push(
+                            AddWidget(onPressed: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const AnalyzeEmotion(isBack: true)),
                               );
+                              setState(() {});
                             }),
                           ],
                         ),
@@ -137,14 +136,15 @@ class _KeepChangingfState extends State<KeepChanging> {
                           children: [
                             const Text('Cognitive distortions:',
                                 style: AppText.text20),
-                            AddWidget(onPressed: () {
-                              Navigator.push(
+                            AddWidget(onPressed: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const CognitiveDistortions(
                                             isBack: true)),
                               );
+                              setState(() {});
                             }),
                           ],
                         ),
@@ -168,7 +168,15 @@ class _KeepChangingfState extends State<KeepChanging> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Inner Work:', style: AppText.text20),
-                            AddWidget(onPressed: () {}),
+                            AddWidget(onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TransformYourself(isBack: true)),
+                              );
+                              setState(() {});
+                            }),
                           ],
                         ),
                         const Gap(15),

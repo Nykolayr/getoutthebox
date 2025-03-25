@@ -7,6 +7,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emoti
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/models/transform_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
 
 /// Репозиторий для списка терапевтических игр
@@ -34,12 +35,37 @@ class EmotionRepository {
     return _instance!;
   }
 
+  /// Добавление трансформа
+  int addTransform(int index) {
+    selectedInnerWork.transforms.add(TransformModel.getTransforms()[index]);
+    updateSelectedInnerWork();
+    return selectedInnerWork.transforms.length - 1;
+  }
+
+  /// Добавление тригера
+  int addTrigers(int index) {
+    TrigersModel triger = TrigersModel.getTrigers()[index];
+    selectedInnerWork.trigers.add(triger);
+    Logger.i('addTrigers: ${selectedInnerWork.trigers.length}');
+    updateSelectedInnerWork();
+    return selectedInnerWork.trigers.length - 1;
+  }
+
+  /// Добавление cognitive
+  int addCognitive(int index) {
+    CognitiveModel cognitive = CognitiveModel.getCognitive()[index];
+    selectedInnerWork.cognitive.add(cognitive);
+    updateSelectedInnerWork();
+    return selectedInnerWork.cognitive.length - 1;
+  }
+
   /// изменение inWorks
   void updateSelectedInnerWork() {
     final index = inWorks.indexWhere((e) => e.id == selectedInnerWork.id);
     if (index != -1) {
       inWorks[index] = selectedInnerWork;
     }
+    Logger.i('updateSelectedInnerWork2: ${selectedInnerWork.toJson()}');
   }
 
   /// Изменение выбранного посещения
@@ -63,22 +89,6 @@ class EmotionRepository {
     updateSelectedInnerWork();
   }
 
-  /// добавление выбранного тригера
-  void changeSelectedTriger(TrigersModel triger) {
-    if (selectedInnerWork.trigers.any((e) => e.id == triger.id)) {
-      selectedInnerWork.trigers.add(triger);
-    }
-    updateSelectedInnerWork();
-  }
-
-  /// Добавление cognitive
-  void addCognitive(CognitiveModel cognitive) {
-    if (selectedInnerWork.cognitive.any((e) => e.id == cognitive.id)) {
-      selectedInnerWork.cognitive.add(cognitive);
-    }
-    updateSelectedInnerWork();
-  }
-
   /// Удаление посещения
   void removeInWork(int id) {
     inWorks.removeWhere((element) => element.id == id);
@@ -91,15 +101,13 @@ class EmotionRepository {
   }
 
   /// Изменение выбранной эмоции
-  void changeSelectedEmotion(EmotionModel emotion, int id) {
-    int indexTriger =
-        selectedInnerWork.trigers.indexWhere((element) => element.id == id);
-    int indexEmotion = selectedInnerWork.trigers[indexTriger].emotions
+  void changeSelectedEmotion(EmotionModel emotion, int indexTrigers) {
+    int indexEmotion = selectedInnerWork.trigers[indexTrigers].emotions
         .indexWhere((element) => element.id == emotion.id);
-    selectedInnerWork.trigers[indexTriger].emotions[indexEmotion] =
+    selectedInnerWork.trigers[indexTrigers].emotions[indexEmotion] =
         emotion.copyWith(
             isSelected: !selectedInnerWork
-                .trigers[indexTriger].emotions[indexEmotion].isSelected);
+                .trigers[indexTrigers].emotions[indexEmotion].isSelected);
   }
 
   /// Получение списка триггеров

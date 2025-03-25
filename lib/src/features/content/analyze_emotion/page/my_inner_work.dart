@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
@@ -21,8 +22,7 @@ class MyInnerWork extends StatefulWidget {
 
 class _MyInnerWorkState extends State<MyInnerWork> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final EmotionBloc bloc = EmotionBloc();
-  int score = 0;
+  final EmotionBloc bloc = Get.find<EmotionBloc>();
 
   @override
   void initState() {

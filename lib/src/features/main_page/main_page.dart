@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/main_page/widgets/small_box_main.dart';
 
@@ -166,6 +168,7 @@ class _MainPageState extends State<MainPage> {
                         iconPadding: getMarginOrPadding(left: 16),
                         arrowPaddingFromLedft: getMarginOrPadding(left: 12),
                         onPressed: () {
+                          Get.find<EmotionBloc>().add(NewInnerWork());
                           Navigator.pushNamed(context, '/analyze_emotion');
                         },
                       ),

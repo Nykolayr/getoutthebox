@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:getoutofthebox/core/common/theme.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/wrap_container_round.dart';
 
 class RefreshWidget extends StatefulWidget {
   final String title;
@@ -45,25 +47,31 @@ class RefreshWidgetState extends State<RefreshWidget>
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
+    return WrapContainerRound(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.title),
-              if (widget.description.isNotEmpty) ...[
-                const Gap(5),
-                Text(widget.description),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.title, style: AppText.text16),
+                if (widget.description.isNotEmpty) ...[
+                  const Gap(5),
+                  Text(widget.description,
+                      style:
+                          AppText.text14.copyWith(fontWeight: FontWeight.w400)),
+                ],
               ],
-            ],
+            ),
           ),
-          RotationTransition(
-            turns: _controller,
-            child: SvgPicture.asset('assets/icons/insert.svg',
-                width: 50, height: 50),
+          const Gap(10),
+          GestureDetector(
+            onTap: _onRefresh,
+            child: RotationTransition(
+              turns: _controller,
+              child: SvgPicture.asset('assets/icons/insert.svg'),
+            ),
           ),
         ],
       ),

@@ -36,27 +36,27 @@ class ExperienceModel {
   static List<ExperienceModel> getExperiences() {
     return [
       ExperienceModel(
-        id: 1,
+        id: 0,
         title: 'Never',
         description: '',
       ),
       ExperienceModel(
-        id: 2,
+        id: 1,
         title: 'Rarely',
         description: '',
       ),
       ExperienceModel(
-        id: 3,
+        id: 2,
         title: 'Sometimes',
         description: '',
       ),
       ExperienceModel(
-        id: 4,
+        id: 3,
         title: 'Often',
         description: '',
       ),
       ExperienceModel(
-        id: 5,
+        id: 4,
         title: 'Constantly',
         description: '',
       ),

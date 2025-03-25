@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +9,6 @@ import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/expiriens_item.dart';
@@ -28,17 +28,26 @@ class CognitiveDistortions extends StatefulWidget {
 
 class _CognitiveDistortionsState extends State<CognitiveDistortions> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int index = 0;
+  final bloc = Get.find<EmotionBloc>();
+  int indexCognitive = 0;
+  int indexExperience = 0;
+
   @override
   void initState() {
     super.initState();
-    index = getRandomNumberExcluding([]);
+    updateCognitive();
+  }
+
+  void updateCognitive() {
+    List<int> excludedNumbers =
+        bloc.state.selectedInnerWork.cognitive.map((e) => e.id).toList();
+    indexCognitive = getRandomNumberExcluding(excludedNumbers);
+    bloc.add(ChangeIndexCognitive(index: indexCognitive));
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Get.find<EmotionBloc>();
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
@@ -64,6 +73,9 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
         child: BlocBuilder<EmotionBloc, EmotionState>(
           bloc: bloc,
           builder: (context, state) {
+            Logger.i('CognitiveDistortions ${state.experience.length}');
+            Logger.i(
+                'CognitiveDistortions ${state.experience[indexExperience].toJson()}');
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -103,16 +115,11 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                 Padding(
                   padding: getMarginOrPadding(horizontal: 8, bottom: 30),
                   child: RefreshWidget(
-                    title: CognitiveModel.getCognitive()[index].title,
-                    description:
-                        CognitiveModel.getCognitive()[index].description,
+                    title: CognitiveModel.getCognitive()[indexCognitive].title,
+                    description: CognitiveModel.getCognitive()[indexCognitive]
+                        .description,
                     onRefresh: () {
-                      List<int> excludedNumbers = state
-                          .selectedInnerWork.cognitive
-                          .map((e) => e.id)
-                          .toList();
-                      index = getRandomNumberExcluding(excludedNumbers);
-                      setState(() {});
+                      updateCognitive();
                     },
                   ),
                 ),
@@ -130,16 +137,15 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
-                            ExperienceModel.getExperiences().length,
+                            state.experience.length,
                             (index) => ExpiriensItem(
                               key: UniqueKey(),
-                              title:
-                                  ExperienceModel.getExperiences()[index].title,
+                              title: state.experience[index].title,
                               id: index,
-                              selectedId:
-                                  state.selectedInnerWork.cognitive[index].id,
+                              selectedId: indexExperience,
                               onPressed: (id) {
-                                bloc.add(ChangeSelectedExperience(id: id));
+                                indexExperience = id;
+                                setState(() {});
                               },
                             ),
                           ),

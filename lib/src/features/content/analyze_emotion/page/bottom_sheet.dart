@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
@@ -38,6 +39,9 @@ void openEmotionBottomSheet(
     content: BlocBuilder<EmotionBloc, EmotionState>(
       bloc: bloc,
       builder: (context, state) {
+        Logger.i(
+            'state.selectedInnerWork.trigers: ${state.selectedInnerWork.trigers.length}');
+
         return Column(
           children: [
             ...List.generate(

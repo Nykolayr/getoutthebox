@@ -15,7 +15,8 @@ import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
 class TransformYourself extends StatefulWidget {
-  const TransformYourself({super.key});
+  final bool isBack;
+  const TransformYourself({super.key, this.isBack = false});
 
   @override
   State<TransformYourself> createState() => _TransformYourselfState();
@@ -30,7 +31,15 @@ class _TransformYourselfState extends State<TransformYourself> {
   @override
   void initState() {
     super.initState();
-    index = getRandomNumberExcluding([]);
+    updateTransform();
+  }
+
+  void updateTransform() {
+    List<int> excludedNumbers =
+        bloc.state.selectedInnerWork.transforms.map((e) => e.id).toList();
+    index = getRandomNumberExcluding(excludedNumbers);
+    bloc.add(ChangeIndexTransform(index: index));
+    score = 0;
     setState(() {});
   }
 
@@ -97,12 +106,7 @@ class _TransformYourselfState extends State<TransformYourself> {
                 title: TransformModel.getTransforms()[index].title,
                 description: TransformModel.getTransforms()[index].description,
                 onRefresh: () {
-                  List<int> excludedNumbers = bloc
-                      .state.selectedInnerWork.transforms
-                      .map((e) => e.id)
-                      .toList();
-                  index = getRandomNumberExcluding(excludedNumbers);
-                  setState(() {});
+                  updateTransform();
                 },
               ),
             ),
@@ -118,27 +122,28 @@ class _TransformYourselfState extends State<TransformYourself> {
                     height: 16.h,
                   ),
                   StarsFeedback(
+                    rating: score,
                     onRatingChanged: (int stars) {
                       setState(() {
-                        score = stars; // Обновляем кол-во звезд
+                        score = stars;
                       });
                       bloc.add(AddStars(stars: stars));
-                      bloc.add(ChangeIndexTransform(index: index));
                     },
                   ),
                 ],
               ),
             ),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Ready for the next step?',
-                  style: TextStylesManager.smallBlackTitle,
-                ),
-              ],
-            ),
+            if (!widget.isBack)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ready for the next step?',
+                    style: TextStylesManager.smallBlackTitle,
+                  ),
+                ],
+              ),
             SizedBox(height: 20.h),
             Padding(
               padding: getMarginOrPadding(horizontal: 16),
@@ -146,15 +151,16 @@ class _TransformYourselfState extends State<TransformYourself> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomBackButton(),
-                  CustomNextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const KeepChanging()),
-                      );
-                    },
-                  ),
+                  if (!widget.isBack)
+                    CustomNextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const KeepChanging()),
+                        );
+                      },
+                    ),
                 ],
               ),
             )

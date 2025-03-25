@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class StarsFeedback extends StatefulWidget {
+  final int rating;
   final Function(int) onRatingChanged; // Коллбэк для передачи рейтинга
-  const StarsFeedback({super.key, required this.onRatingChanged});
+  const StarsFeedback(
+      {super.key, required this.onRatingChanged, this.rating = 0});
 
   @override
   State<StarsFeedback> createState() => _StarsFeedbackState();
@@ -13,13 +15,15 @@ class _StarsFeedbackState extends State<StarsFeedback> {
   int selectedRating = 0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(10, (index) {
         return GestureDetector(
           child: SvgPicture.asset(
-            index < selectedRating
+            index < widget.rating
                 ? 'assets/icons/star_green.svg' // Активная звезда
                 : 'assets/icons/star_gray.svg', // Неактивная звезда
           ),
