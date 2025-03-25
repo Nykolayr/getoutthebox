@@ -27,9 +27,11 @@ class AnalyzeEmotion extends StatefulWidget {
 }
 
 class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
+  final TextEditingController controller = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final bloc = Get.find<EmotionBloc>();
   bool isBegin = true;
+  bool isFinish = false;
   int index = 0;
 
   @override
@@ -41,6 +43,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
   }
 
   void updateTrigers() {
+    controller.clear();
     List<int> excludedNumbers =
         bloc.state.selectedInnerWork.trigers.map((e) => e.id).toList();
     index = getRandomNumberExcluding(excludedNumbers);
@@ -49,10 +52,17 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -117,9 +127,20 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                       description: isBegin
                           ? ''
                           : TrigersModel.getTrigers()[index].description,
-                      onRefresh: () {
+                      onRefresh: () async {
+                        if (isFinish) {
+                          return;
+                        }
+                        isFinish = true;
                         isBegin = false;
                         updateTrigers();
+                        openNoteBottomSheet(
+                          context: context,
+                          title: TrigersModel.getTrigers()[index].title,
+                          type: NoteType.triger,
+                          index: index,
+                          controller: controller,
+                        );
                       },
                     ),
                   ),
@@ -157,6 +178,9 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                         if (!widget.isBack)
                           CustomNextButton(
                             onPressed: () {
+                              if (!isFinish) {
+                                return;
+                              }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

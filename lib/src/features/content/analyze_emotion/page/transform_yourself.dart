@@ -7,10 +7,10 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/transform_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
-import 'package:getoutofthebox/src/features/drawer/widgets/stars_feedback.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
@@ -23,23 +23,33 @@ class TransformYourself extends StatefulWidget {
 }
 
 class _TransformYourselfState extends State<TransformYourself> {
+  final TextEditingController controller = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int score = 0;
   final bloc = Get.find<EmotionBloc>();
   int index = 0;
   bool isBegin = true;
+  bool isFinish = false;
+
   @override
   void initState() {
     super.initState();
   }
 
   void updateTransform() {
+    controller.clear();
     List<int> excludedNumbers =
         bloc.state.selectedInnerWork.transforms.map((e) => e.id).toList();
     index = getRandomNumberExcluding(excludedNumbers);
     bloc.add(ChangeIndexTransform(index: index));
     score = 0;
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -108,9 +118,20 @@ class _TransformYourselfState extends State<TransformYourself> {
                 description: isBegin
                     ? ''
                     : TransformModel.getTransforms()[index].description,
-                onRefresh: () {
+                onRefresh: () async {
+                  if (isFinish) {
+                    return;
+                  }
+                  isFinish = true;
                   isBegin = false;
                   updateTransform();
+                  openNoteBottomSheet(
+                    context: context,
+                    title: TransformModel.getTransforms()[index].title,
+                    type: NoteType.transform,
+                    index: index,
+                    controller: controller,
+                  );
                 },
               ),
             ),
@@ -160,6 +181,9 @@ class _TransformYourselfState extends State<TransformYourself> {
                   if (!widget.isBack)
                     CustomNextButton(
                       onPressed: () {
+                        if (!isFinish) {
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(

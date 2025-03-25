@@ -1,32 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/show_modal_bottom.dart';
+import 'package:getoutofthebox/src/features/widgets/custom_without_icon_button.dart';
 
-// void openNextBottomSheet(BuildContext context) {
-//   final bloc = Get.find<EmotionBloc>();
-//   showEmotionModalBottomSheet(
-//     context: context,
-//     title: 'Explore the triggers',
-//     content: Column(
-//       children: [
-//         ...List.generate(
-//           bloc.state.trigers.length,
-//           (index) => TrigersItem(
-//             title: bloc.state.trigers[index].title,
-//             onTap: () {
-//               bloc.add(ChangeSelectedTriger(triger: bloc.state.trigers[index]));
-//               openEmotionBottomSheet(context);
-//             },
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
+void openNoteBottomSheet({
+  required BuildContext context,
+  required String title,
+  required NoteType type,
+  required int index,
+  required TextEditingController controller,
+}) {
+  final bloc = Get.find<EmotionBloc>();
+
+  showEmotionModalBottomSheet(
+    context: context,
+    title: title,
+    showCloseButton: false,
+    content: Column(
+      children: [
+        TextField(
+          controller: controller,
+          maxLines: null,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          minLines: 2,
+        ),
+        const Gap(20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomWithoutIconButton(
+              title: 'Close',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            CustomWithoutIconButton(
+              title: 'Save',
+              onPressed: () {
+                bloc.add(ChangeNote(
+                  note: controller.text,
+                  type: type,
+                  index: index,
+                ));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        )
+      ],
+    ),
+  );
+}
 
 void openEmotionBottomSheet(
   BuildContext context,

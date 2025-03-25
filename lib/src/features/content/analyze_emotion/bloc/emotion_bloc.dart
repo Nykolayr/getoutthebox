@@ -26,6 +26,18 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<ChangeIndexTrigers>(_onChangeIndexTrigers);
     on<ChangeIndexTransform>(_onChangeIndexTransform);
     on<ChangeIndexCognitive>(_onChangeIndexCognitive);
+    on<ChangeNote>(_onChangeNote);
+  }
+
+  /// Изменение заметки
+  Future<void> _onChangeNote(
+      ChangeNote event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>()
+        .changeNote(event.note, event.type, event.index);
+    emit(state.copyWith(
+      selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
+      innerWorks: Get.find<EmotionRepository>().inWorks,
+    ));
   }
 
   /// Изменение индекса тригера

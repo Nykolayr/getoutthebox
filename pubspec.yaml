@@ -13,7 +13,7 @@ publish_to: "none"
  # Секрет: 5357105730c3547439c40811bf2cdc13
 
 
-version: 0.1.5+5
+version: 0.1.7+7
 
 environment:
   sdk: ">=3.5.0 <4.0.0"

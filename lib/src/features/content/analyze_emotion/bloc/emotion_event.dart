@@ -73,3 +73,18 @@ class ChangeIndexCognitive extends EmotionEvent {
   final int index;
   ChangeIndexCognitive({required this.index});
 }
+
+/// Изменение заметки
+class ChangeNote extends EmotionEvent {
+  final String note;
+  final NoteType type;
+  final int index;
+  ChangeNote({required this.note, required this.type, required this.index});
+}
+
+/// Тип заметки
+enum NoteType {
+  triger,
+  cognitive,
+  transform,
+}

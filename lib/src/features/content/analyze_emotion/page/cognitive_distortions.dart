@@ -10,6 +10,7 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/expiriens_item.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
@@ -27,18 +28,26 @@ class CognitiveDistortions extends StatefulWidget {
 }
 
 class _CognitiveDistortionsState extends State<CognitiveDistortions> {
+  final TextEditingController controller = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final bloc = Get.find<EmotionBloc>();
   int indexCognitive = 0;
   int indexExperience = 0;
   bool isBegin = true;
-
+  bool isFinish = false;
   @override
   void initState() {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   void updateCognitive() {
+    controller.clear();
     List<int> excludedNumbers =
         bloc.state.selectedInnerWork.cognitive.map((e) => e.id).toList();
     indexCognitive = getRandomNumberExcluding(excludedNumbers);
@@ -122,9 +131,21 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                         ? ''
                         : CognitiveModel.getCognitive()[indexCognitive]
                             .description,
-                    onRefresh: () {
+                    onRefresh: () async {
+                      if (isFinish) {
+                        return;
+                      }
+                      isFinish = true;
                       isBegin = false;
                       updateCognitive();
+                      openNoteBottomSheet(
+                        context: context,
+                        title:
+                            CognitiveModel.getCognitive()[indexCognitive].title,
+                        type: NoteType.cognitive,
+                        index: indexCognitive,
+                        controller: controller,
+                      );
                     },
                   ),
                 ),
@@ -180,6 +201,9 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                       if (!widget.isBack)
                         CustomNextButton(
                           onPressed: () {
+                            if (!isFinish) {
+                              return;
+                            }
                             Navigator.push(
                               context,
                               MaterialPageRoute(

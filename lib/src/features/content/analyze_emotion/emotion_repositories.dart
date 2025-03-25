@@ -2,6 +2,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/network/api/api.dart';
 import 'package:getoutofthebox/core/network/api/response_api.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cognitive_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_games_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
@@ -33,6 +34,22 @@ class EmotionRepository {
   static EmotionRepository get instance {
     _instance ??= EmotionRepository._();
     return _instance!;
+  }
+
+  /// Изменение заметки
+  void changeNote(String note, NoteType type, int index) {
+    switch (type) {
+      case NoteType.triger:
+        selectedInnerWork.trigers[index].note = note;
+        break;
+      case NoteType.cognitive:
+        selectedInnerWork.cognitive[index].note = note;
+        break;
+      case NoteType.transform:
+        selectedInnerWork.transforms[index].note = note;
+        break;
+    }
+    updateSelectedInnerWork();
   }
 
   /// Добавление трансформа
