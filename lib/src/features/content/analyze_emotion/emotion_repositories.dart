@@ -15,7 +15,9 @@ class EmotionRepository {
   List<EmotionGamesModel> emotionGames = [];
   List<TrigersModel> trigers = [];
   EmotionModel emotion = EmotionModel.initial();
-  List<InWorkModel> inWork = [];
+  List<InWorkModel> inWorks = [];
+  InWorkModel selectedInnerWork = InWorkModel.init(0);
+  TrigersModel selectedTriger = TrigersModel.initial();
   List<String> experience = [
     'Never',
     'Rarely',
@@ -41,11 +43,46 @@ class EmotionRepository {
     return _instance!;
   }
 
+  /// Изменение выбранного посещения
+  void changeSelectedInnerWork(InWorkModel innerWork) {
+    selectedInnerWork = innerWork;
+  }
+
+  /// Добавление звезды
+  void addStars(int stars) {
+    selectedInnerWork.stars = stars;
+  }
+
+  /// Изменение выбранного опыта
+  void changeSelectedExperience(String experience) {
+    selectedInnerWork.experience = experience;
+  }
+
+  /// добавление выбранного тригера
+  void changeSelectedTriger(TrigersModel triger) {
+    selectedTriger = triger;
+    if (!selectedInnerWork.trigers.contains(triger)) {
+      selectedInnerWork.trigers.add(triger);
+    }
+  }
+
+  /// Удаление посещения
+  void removeInWork(int id) {
+    inWorks.removeWhere((element) => element.id == id);
+  }
+
+  /// Добавление нового посещения
+  void addInWork() {
+    inWorks.add(InWorkModel.init(inWorks.length + 1));
+    selectedInnerWork = inWorks.last;
+  }
+
   /// Изменение выбранной эмоции
-  void changeSelectedEmotion(int id) {
-    int index = emotions.indexWhere((element) => element.id == id);
-    emotions[index] =
-        emotions[index].copyWith(isSelected: !emotions[index].isSelected);
+  void changeSelectedEmotion(EmotionModel emotion) {
+    int index = selectedTriger.emotions
+        .indexWhere((element) => element.id == emotion.id);
+    selectedTriger.emotions[index] = emotion.copyWith(
+        isSelected: !selectedTriger.emotions[index].isSelected);
   }
 
   /// Получение списка триггеров
@@ -59,7 +96,7 @@ class EmotionRepository {
             .map((game) => TrigersModel.fromJson(game))
             .toList()
             .cast<TrigersModel>();
-
+        Logger.i('getTrigers length: ${trigers.length}');
         return '';
       } else if (response is ResError) {
         return response.errorMessage;

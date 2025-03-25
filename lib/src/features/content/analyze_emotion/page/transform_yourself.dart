@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
@@ -97,10 +99,11 @@ class _TransformYourselfState extends State<TransformYourself> {
                     height: 16.h,
                   ),
                   StarsFeedback(
-                    onRatingChanged: (int rating) {
+                    onRatingChanged: (int stars) {
                       setState(() {
-                        score = rating; // Обновляем кол-во звезд
+                        score = stars; // Обновляем кол-во звезд
                       });
+                      Get.find<EmotionBloc>().add(AddStars(stars: stars));
                     },
                   ),
                 ],

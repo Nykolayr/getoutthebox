@@ -10,8 +10,8 @@ class GetEmotionGames extends EmotionEvent {}
 
 /// Изменение выбранной эмоции
 class ChangeSelectedEmotion extends EmotionEvent {
-  final int id;
-  ChangeSelectedEmotion({required this.id});
+  final EmotionModel emotion;
+  ChangeSelectedEmotion({required this.emotion});
 }
 
 /// Изменение выбранного опыта
@@ -28,9 +28,30 @@ class AddInnerWork extends EmotionEvent {
 
 /// Удаление посещения из списка
 class RemoveInnerWork extends EmotionEvent {
-  final String id;
+  final int id;
   RemoveInnerWork({required this.id});
 }
 
 /// Получение списка триггеров
 class GetTrigers extends EmotionEvent {}
+
+/// Выбор тригера
+class ChangeSelectedTriger extends EmotionEvent {
+  final TrigersModel triger;
+  ChangeSelectedTriger({required this.triger});
+}
+
+/// Добавление нового посещения
+class NewInnerWork extends EmotionEvent {}
+
+/// Добавление звезды
+class AddStars extends EmotionEvent {
+  final int stars;
+  AddStars({required this.stars});
+}
+
+/// Изменение выбранного посещения
+class ChangeSelectedInnerWork extends EmotionEvent {
+  final InWorkModel innerWork;
+  ChangeSelectedInnerWork({required this.innerWork});
+}

@@ -1,14 +1,14 @@
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 
 class TrigersModel {
-  final int id;
-  final String name;
-  final String description;
-  final List<EmotionModel> emotions;
+  int id;
+  String title;
+  String description;
+  List<EmotionModel> emotions;
 
   TrigersModel({
     required this.id,
-    required this.name,
+    required this.title,
     required this.description,
     required this.emotions,
   });
@@ -16,7 +16,7 @@ class TrigersModel {
   factory TrigersModel.initial() {
     return TrigersModel(
       id: 0,
-      name: '',
+      title: '',
       description: '',
       emotions: EmotionModel.getEmotions(),
     );
@@ -25,7 +25,7 @@ class TrigersModel {
   factory TrigersModel.fromJson(Map<String, dynamic> json) {
     return TrigersModel(
       id: json['id'] ?? 0,
-      name: json['name'] ?? '',
+      title: json['title'] ?? '',
       description: json['description'] ?? '',
       emotions: EmotionModel.getEmotions(),
     );
@@ -34,7 +34,7 @@ class TrigersModel {
   factory TrigersModel.init() {
     return TrigersModel(
       id: 0,
-      name: '',
+      title: '',
       description: '',
       emotions: EmotionModel.getEmotions(),
     );
@@ -42,7 +42,7 @@ class TrigersModel {
   toJson() {
     return {
       'id': id,
-      'name': name,
+      'title': title,
       'description': description,
       'emotions': emotions.map((e) => e.toJson()).toList(),
     };

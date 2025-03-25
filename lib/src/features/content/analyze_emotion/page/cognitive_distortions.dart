@@ -15,7 +15,8 @@ import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 
 class CognitiveDistortions extends StatelessWidget {
-  CognitiveDistortions({super.key});
+  final bool isBack;
+  CognitiveDistortions({super.key, this.isBack = false});
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -121,15 +122,16 @@ class CognitiveDistortions extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Ready for the next step?',
-                      style: TextStylesManager.smallBlackTitle,
-                    ),
-                  ],
-                ),
+                if (!isBack)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Ready for the next step?',
+                        style: TextStylesManager.smallBlackTitle,
+                      ),
+                    ],
+                  ),
                 SizedBox(height: 20.h),
                 Padding(
                   padding: getMarginOrPadding(horizontal: 16),
@@ -137,16 +139,17 @@ class CognitiveDistortions extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CustomBackButton(),
-                      CustomNextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const TransformYourself()),
-                          );
-                        },
-                      ),
+                      if (!isBack)
+                        CustomNextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TransformYourself()),
+                            );
+                          },
+                        ),
                     ],
                   ),
                 )

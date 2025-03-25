@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_games_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
@@ -19,6 +20,43 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<AddInnerWork>(_onAddInnerWork);
     on<RemoveInnerWork>(_onRemoveInnerWork);
     on<GetTrigers>(_onGetTrigers);
+    on<ChangeSelectedTriger>(_onChangeSelectedTriger);
+    on<NewInnerWork>(_onNewInnerWork);
+    on<AddStars>(_onAddStars);
+    on<ChangeSelectedInnerWork>(_onChangeSelectedInnerWork);
+  }
+
+  /// Изменение выбранного посещения
+  Future<void> _onChangeSelectedInnerWork(
+      ChangeSelectedInnerWork event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().changeSelectedInnerWork(event.innerWork);
+    emit(state.copyWith(selectedInnerWork: event.innerWork));
+  }
+
+  /// Добавление звезды
+  Future<void> _onAddStars(AddStars event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().addStars(event.stars);
+
+    emit(state.copyWith(
+        selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork));
+  }
+
+  /// Добавление нового посещения
+  Future<void> _onNewInnerWork(
+      NewInnerWork event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().addInWork();
+    emit(state.copyWith(
+        selectedInnerWork: Get.find<EmotionRepository>().inWorks.last));
+  }
+
+  /// Изменение выбранного тригера
+  Future<void> _onChangeSelectedTriger(
+      ChangeSelectedTriger event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().changeSelectedTriger(event.triger);
+    emit(state.copyWith(
+        selectedTriger: event.triger,
+        selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
+        innerWorks: Get.find<EmotionRepository>().inWorks));
   }
 
   /// Получение списка триггеров
@@ -43,25 +81,29 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
   /// Удаление посещения из списка
   Future<void> _onRemoveInnerWork(
       RemoveInnerWork event, Emitter<EmotionState> emit) async {
-    emit(state.copyWith(
-        innerWorks: state.innerWorks
-            .where((innerWork) => innerWork.id != event.id)
-            .toList()));
+    Get.find<EmotionRepository>().removeInWork(event.id);
+    emit(state.copyWith(innerWorks: Get.find<EmotionRepository>().inWorks));
   }
 
   /// Изменение выбранного опыта
   Future<void> _onChangeSelectedExperience(
       ChangeSelectedExperience event, Emitter<EmotionState> emit) async {
-    emit(state.copyWith(selectedExperience: event.id));
+    Get.find<EmotionRepository>()
+        .changeSelectedExperience(state.experience[event.id]);
+    emit(state.copyWith(
+        selectedExperience: event.id,
+        selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork));
   }
 
   /// Изменение выбранной эмоции
   Future<void> _onChangeSelectedEmotion(
       ChangeSelectedEmotion event, Emitter<EmotionState> emit) async {
-    Get.find<EmotionRepository>().changeSelectedEmotion(event.id);
-
+    Get.find<EmotionRepository>().changeSelectedEmotion(event.emotion);
+    Logger.i('selectedTriger: ${event.emotion.isSelected}');
     emit(state.copyWith(
-        emotions: Get.find<EmotionRepository>().emotions,
+        selectedTriger: Get.find<EmotionRepository>().selectedTriger,
+        selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
+        innerWorks: Get.find<EmotionRepository>().inWorks,
         isListChange: !state.isListChange));
   }
 
@@ -86,7 +128,10 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     final answer = await Get.find<EmotionRepository>().getEmotions();
     emit(state.copyWith(isLoading: false));
     if (answer.isEmpty) {
-      emit(state.copyWith(emotions: Get.find<EmotionRepository>().emotions));
+      emit(state.copyWith(
+          selectedTriger: Get.find<EmotionRepository>().selectedTriger,
+          selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
+          innerWorks: Get.find<EmotionRepository>().inWorks));
     } else {
       emit(state.copyWith(errorMessage: answer));
     }

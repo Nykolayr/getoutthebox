@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/cognitive_distortions.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/emotion_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/analyze_card_emotion.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/show_modal_bottom.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/trigers_item.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
 import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
@@ -39,52 +36,8 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
     super.initState();
     bloc.add(GetEmotions());
     bloc.add(GetTrigers());
-    emotions = bloc.state.emotions;
-  }
-
-  void openNextBottomSheet(BuildContext context) {
-    showEmotionModalBottomSheet(
-      context: context,
-      title: 'Explore the triggers',
-      content: Column(
-        children: [
-          ...List.generate(
-            games.length,
-            (index) => TrigersItem(
-              title: games[index],
-              onTap: () => openEmotionBottomSheet(context),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void openEmotionBottomSheet(BuildContext context) {
-    showEmotionModalBottomSheet(
-      context: context,
-      showBackButton: true,
-      title: 'Choose your emotion',
-      content: BlocBuilder<EmotionBloc, EmotionState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return Column(
-            children: [
-              ...List.generate(
-                state.emotions.length,
-                (index) => EmotionItemChoose(
-                  key: UniqueKey(),
-                  emotion: state.emotions[index],
-                  onTap: (emotion) {
-                    bloc.add(ChangeSelectedEmotion(id: emotion.id));
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+    bloc.add(NewInnerWork());
+    emotions = bloc.state.selectedTriger.emotions;
   }
 
   @override

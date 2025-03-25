@@ -1,11 +1,11 @@
 class EmotionModel {
-  final int id;
-  final String title;
-  final String description;
-  final String cause;
-  final String goal;
-  final String image;
-  final bool isSelected;
+  int id;
+  String title;
+  String description;
+  String cause;
+  String goal;
+  String image;
+  bool isSelected;
 
   EmotionModel({
     required this.id,

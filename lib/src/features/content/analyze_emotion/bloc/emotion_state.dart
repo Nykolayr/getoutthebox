@@ -2,7 +2,6 @@ part of 'emotion_bloc.dart';
 
 class EmotionState extends Equatable {
   final List<EmotionGamesModel> emotionGames;
-  final List<EmotionModel> emotions;
   final bool isLoading;
   final String errorMessage;
   final bool isListChange;
@@ -11,10 +10,12 @@ class EmotionState extends Equatable {
   final bool isChange;
   final List<InWorkModel> innerWorks;
   final List<TrigersModel> trigers;
+  final TrigersModel selectedTriger;
+  final InWorkModel selectedInnerWork;
+
   @override
   const EmotionState({
     required this.emotionGames,
-    required this.emotions,
     required this.isLoading,
     required this.errorMessage,
     required this.isListChange,
@@ -23,11 +24,12 @@ class EmotionState extends Equatable {
     required this.isChange,
     required this.innerWorks,
     required this.trigers,
+    required this.selectedTriger,
+    required this.selectedInnerWork,
   });
 
   factory EmotionState.initial() {
     return EmotionState(
-      emotions: Get.find<EmotionRepository>().emotions,
       isLoading: false,
       errorMessage: '',
       isListChange: false,
@@ -35,33 +37,36 @@ class EmotionState extends Equatable {
       experience: Get.find<EmotionRepository>().experience,
       selectedExperience: 0,
       isChange: false,
-      innerWorks: const [],
+      innerWorks: Get.find<EmotionRepository>().inWorks,
       trigers: Get.find<EmotionRepository>().trigers,
+      selectedTriger: TrigersModel.init(),
+      selectedInnerWork: InWorkModel.init(0),
     );
   }
 
   EmotionState copyWith({
-    List<EmotionModel>? emotions,
     bool? isLoading,
     String? errorMessage,
     bool? isListChange,
-    EmotionModel? emotion,
     List<EmotionGamesModel>? emotionGames,
     List<String>? experience,
     int? selectedExperience,
     bool? isChange,
     List<InWorkModel>? innerWorks,
     List<TrigersModel>? trigers,
+    TrigersModel? selectedTriger,
+    InWorkModel? selectedInnerWork,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
             emotionGames != null && emotionGames != this.emotionGames ||
-            emotions != null && emotions != this.emotions ||
             innerWorks != null && innerWorks != this.innerWorks ||
-            trigers != null && trigers != this.trigers;
+            trigers != null && trigers != this.trigers ||
+            selectedTriger != null && selectedTriger != this.selectedTriger ||
+            selectedInnerWork != null &&
+                selectedInnerWork != this.selectedInnerWork;
 
     return EmotionState(
-      emotions: emotions ?? this.emotions,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       isListChange: shouldToggleList ? !this.isListChange : this.isListChange,
@@ -71,12 +76,13 @@ class EmotionState extends Equatable {
       isChange: isChange ?? this.isChange,
       innerWorks: innerWorks ?? this.innerWorks,
       trigers: trigers ?? this.trigers,
+      selectedTriger: selectedTriger ?? this.selectedTriger,
+      selectedInnerWork: selectedInnerWork ?? this.selectedInnerWork,
     );
   }
 
   @override
   List<Object> get props => [
-        emotions,
         isLoading,
         errorMessage,
         isListChange,
@@ -86,5 +92,7 @@ class EmotionState extends Equatable {
         isChange,
         innerWorks,
         trigers,
+        selectedTriger,
+        selectedInnerWork,
       ];
 }
