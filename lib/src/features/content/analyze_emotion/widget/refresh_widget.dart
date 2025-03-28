@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/circle_svg.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/wrap_container_round.dart';
 
 class RefreshWidget extends StatefulWidget {
   final String title;
   final String description;
+  final bool isBegin;
   final void Function() onRefresh;
   const RefreshWidget({
     super.key,
     required this.title,
     this.description = '',
     required this.onRefresh,
+    required this.isBegin,
   });
 
   @override
@@ -21,12 +23,12 @@ class RefreshWidget extends StatefulWidget {
 
 class RefreshWidgetState extends State<RefreshWidget>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
     );
@@ -34,14 +36,14 @@ class RefreshWidgetState extends State<RefreshWidget>
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
-  Future<void> _onRefresh() async {
-    _controller.forward(from: 0.0);
+  Future<void> onRefresh() async {
+    controller.forward(from: 0.0);
     await Future.delayed(const Duration(seconds: 1));
-    _controller.reset();
+    controller.reset();
     widget.onRefresh();
   }
 
@@ -54,6 +56,7 @@ class RefreshWidgetState extends State<RefreshWidget>
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(widget.title, style: AppText.text16),
                 if (widget.description.isNotEmpty) ...[
@@ -67,10 +70,13 @@ class RefreshWidgetState extends State<RefreshWidget>
           ),
           const Gap(10),
           GestureDetector(
-            onTap: _onRefresh,
+            onTap: onRefresh,
             child: RotationTransition(
-              turns: _controller,
-              child: SvgPicture.asset('assets/icons/insert.svg'),
+              turns: controller,
+              child: CircleSvg(
+                icon: 'assets/svg/refresh.svg',
+                isBegin: widget.isBegin,
+              ),
             ),
           ),
         ],

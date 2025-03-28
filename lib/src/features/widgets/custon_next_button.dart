@@ -5,7 +5,12 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 
 class CustomNextButton extends StatelessWidget {
   final void Function() onPressed;
-  const CustomNextButton({super.key, required this.onPressed});
+  final bool isFinish;
+  const CustomNextButton({
+    super.key,
+    required this.onPressed,
+    this.isFinish = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class CustomNextButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.r),
-          color: StyleManager.mainColor,
+          color: isFinish ? StyleManager.mainColor : StyleManager.grayColor,
         ),
         child: Padding(
           padding: getMarginOrPadding(horizontal: 28.5, vertical: 11),

@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:getoutofthebox/core/common/styles.dart';
+import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/circle_svg.dart';
 
 class AnalyzeCardEmotion extends StatelessWidget {
   final String title;
   final void Function() onPressed;
-  final bool haveAccess;
-
+  final bool isBegin;
   const AnalyzeCardEmotion({
     super.key,
     required this.title,
     required this.onPressed,
-    required this.haveAccess,
+    required this.isBegin,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: haveAccess
+      onTap: isBegin
           ? onPressed
           : null, // Обрабатываем клик только если есть доступ
       child: Container(
@@ -33,30 +32,15 @@ class AnalyzeCardEmotion extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStylesManager.standartMain
-                      .copyWith(fontWeight: FontWeight.w500),
-                ),
+                Text(title, style: AppText.text16),
               ],
             ),
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: StyleManager.mainColor.withOpacity(0.2),
-                shape: BoxShape.circle,
+            Transform.rotate(
+              angle: -0.7854, // 45 degrees in radians
+              child: CircleSvg(
+                icon: 'assets/icons/arrow.svg',
+                isBegin: !isBegin,
               ),
-              child: Center(
-                  child: SvgPicture.asset(
-                haveAccess
-                    ? 'assets/icons/forward.svg'
-                    : 'assets/icons/insert.svg',
-                colorFilter: const ColorFilter.mode(
-                  StyleManager.mainColor,
-                  BlendMode.srcIn,
-                ),
-              )),
             ),
           ],
         ),

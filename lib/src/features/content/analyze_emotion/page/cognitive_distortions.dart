@@ -124,6 +124,7 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                 Padding(
                   padding: getMarginOrPadding(horizontal: 8, bottom: 30),
                   child: RefreshWidget(
+                    isBegin: isBegin,
                     title: isBegin
                         ? 'Cognitive distortions'
                         : CognitiveModel.getCognitive()[indexCognitive].title,

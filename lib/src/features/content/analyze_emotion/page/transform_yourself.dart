@@ -112,6 +112,7 @@ class _TransformYourselfState extends State<TransformYourself> {
             Padding(
               padding: getMarginOrPadding(horizontal: 8),
               child: RefreshWidget(
+                isBegin: isBegin,
                 title: isBegin
                     ? 'Transform yourself'
                     : TransformModel.getTransforms()[index].title,
