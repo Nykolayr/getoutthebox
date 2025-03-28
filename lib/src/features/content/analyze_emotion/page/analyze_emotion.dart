@@ -51,13 +51,13 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
 
   @override
   Widget build(BuildContext context) {
-    return WrapEmotion(
-      stepType: StepType.first,
-      isFinish: isFinish,
-      content: BlocBuilder<EmotionBloc, EmotionState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return Column(
+    return BlocBuilder<EmotionBloc, EmotionState>(
+      bloc: bloc,
+      builder: (context, state) {
+        return WrapEmotion(
+          stepType: StepType.first,
+          isFinish: isFinish && state.countEmotions > 0,
+          content: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -66,7 +66,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                 style: AppText.text16,
                 textAlign: TextAlign.center,
               ),
-              const Gap(10),
+              const Gap(15),
               Text(
                 'Comment on your trigger',
                 style: AppText.text14.copyWith(
@@ -81,19 +81,28 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                     isBegin ? '' : TrigersModel.getTrigers()[index].description,
                 isBegin: isBegin,
                 onRefresh: () async {
-                  if (isFinish) {
-                    return;
+                  if (isBegin) {
+                    isFinish = true;
+                    isBegin = false;
+                    updateTrigers();
+                    openNoteBottomSheet(
+                      context: context,
+                      title: TrigersModel.getTrigers()[index].title,
+                      description: StepType.first.description,
+                      type: NoteType.triger,
+                      index: index,
+                      controller: controller,
+                    );
+                  } else {
+                    openNoteBottomSheet(
+                      context: context,
+                      title: TrigersModel.getTrigers()[index].title,
+                      description: StepType.first.description,
+                      type: NoteType.triger,
+                      index: index,
+                      controller: controller,
+                    );
                   }
-                  isFinish = true;
-                  isBegin = false;
-                  updateTrigers();
-                  openNoteBottomSheet(
-                    context: context,
-                    title: 'Comment on your trigger',
-                    type: NoteType.triger,
-                    index: index,
-                    controller: controller,
-                  );
                 },
               ),
               const Gap(10),
@@ -107,9 +116,9 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                 },
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trans
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
@@ -129,6 +130,7 @@ class _TransformYourselfState extends State<TransformYourself> {
                   openNoteBottomSheet(
                     context: context,
                     title: 'Your next step',
+                    description: StepType.third.description,
                     type: NoteType.transform,
                     index: index,
                     controller: controller,

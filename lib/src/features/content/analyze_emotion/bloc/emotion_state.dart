@@ -12,7 +12,7 @@ class EmotionState extends Equatable {
   final int indexTrigers;
   final int indexTransform;
   final int indexCognitive;
-
+  final int countEmotions;
   @override
   const EmotionState({
     required this.emotionGames,
@@ -26,6 +26,7 @@ class EmotionState extends Equatable {
     required this.indexTrigers,
     required this.indexTransform,
     required this.indexCognitive,
+    required this.countEmotions,
   });
 
   factory EmotionState.initial() {
@@ -41,6 +42,7 @@ class EmotionState extends Equatable {
       indexTrigers: 0,
       indexTransform: 0,
       indexCognitive: 0,
+      countEmotions: 0,
     );
   }
 
@@ -56,6 +58,7 @@ class EmotionState extends Equatable {
     int? indexTrigers,
     int? indexTransform,
     int? indexCognitive,
+    int? countEmotions,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
@@ -77,6 +80,7 @@ class EmotionState extends Equatable {
       indexTrigers: indexTrigers ?? this.indexTrigers,
       indexTransform: indexTransform ?? this.indexTransform,
       indexCognitive: indexCognitive ?? this.indexCognitive,
+      countEmotions: countEmotions ?? this.countEmotions,
     );
   }
 
@@ -93,5 +97,6 @@ class EmotionState extends Equatable {
         indexTrigers,
         indexTransform,
         indexCognitive,
+        countEmotions,
       ];
 }

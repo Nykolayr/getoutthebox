@@ -12,6 +12,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/models/cogni
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/analyze_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/transform_yourself.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/expiriens_item.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/refresh_widget.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
@@ -143,6 +144,7 @@ class _CognitiveDistortionsState extends State<CognitiveDistortions> {
                         context: context,
                         title:
                             'How the distortion is connected to your trigger',
+                        description: StepType.second.description,
                         type: NoteType.cognitive,
                         index: indexCognitive,
                         controller: controller,

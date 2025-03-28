@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
+import 'package:getoutofthebox/core/common/theme.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/circle_svg.dart';
 
 void showEmotionModalBottomSheet({
   required BuildContext context,
   required String title,
   required Widget content,
+  String description = '',
   bool showBackButton = false,
   bool showCloseButton = true,
 }) {
@@ -48,25 +51,31 @@ void showEmotionModalBottomSheet({
                           onPressed: () => Navigator.pop(context),
                         ),
                       Expanded(
-                        child: Text(
-                          title,
-                          style: showCloseButton
-                              ? TextStylesManager.smallBlackTitle
-                              : TextStylesManager.smallBlackTitle.copyWith(
-                                  fontSize: 16.sp,
-                                ),
-                          textAlign: TextAlign.center,
+                        child: Column(
+                          children: [
+                            Text(
+                              title,
+                              style: TextStylesManager.smallBlackTitle,
+                              textAlign: TextAlign.left,
+                            ),
+                            if (description.isNotEmpty) ...[
+                              const Gap(5),
+                              Text(description, style: AppText.text14),
+                            ],
+                          ],
                         ),
                       ),
-                      if (showCloseButton)
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            size: 20,
-                            color: Colors.black,
+                      if (showCloseButton) ...[
+                        const Gap(15),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: const CircleSvg(
+                            icon: 'assets/svg/close.svg',
+                            isBegin: false,
+                            isClose: true,
                           ),
-                          onPressed: () => Navigator.of(context).pop(),
                         ),
+                      ],
                     ],
                   ),
                   const Gap(30),

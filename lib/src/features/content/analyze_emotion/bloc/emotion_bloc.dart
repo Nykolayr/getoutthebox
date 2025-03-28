@@ -96,7 +96,8 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     Get.find<EmotionRepository>().addInWork();
     emit(state.copyWith(
         selectedInnerWork: Get.find<EmotionRepository>().inWorks.last,
-        innerWorks: Get.find<EmotionRepository>().inWorks));
+        innerWorks: Get.find<EmotionRepository>().inWorks,
+        countEmotions: 0));
   }
 
   /// Получение списка триггеров
@@ -115,7 +116,7 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
   /// Добавление посещения в список
   Future<void> _onAddInnerWork(
       AddInnerWork event, Emitter<EmotionState> emit) async {
-    emit(state.copyWith(innerWorks: [...state.innerWorks]));
+    emit(state.copyWith(innerWorks: [...state.innerWorks], countEmotions: 0));
   }
 
   /// Удаление посещения из списка
@@ -140,12 +141,20 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
   /// Изменение выбранной эмоции
   Future<void> _onChangeSelectedEmotion(
       ChangeSelectedEmotion event, Emitter<EmotionState> emit) async {
-    Get.find<EmotionRepository>()
-        .changeSelectedEmotion(event.emotion, state.indexTrigers);
+    Get.find<EmotionRepository>().changeSelectedEmotion(
+        event.emotion, state.indexTrigers, state.countEmotions == 3);
+
+    int countEmotions = Get.find<EmotionRepository>()
+        .selectedInnerWork
+        .trigers[state.indexTrigers]
+        .emotions
+        .where((element) => element.isSelected)
+        .length;
 
     emit(state.copyWith(
         selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
         innerWorks: Get.find<EmotionRepository>().inWorks,
+        countEmotions: countEmotions,
         isListChange: !state.isListChange));
   }
 

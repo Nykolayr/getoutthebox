@@ -152,4 +152,15 @@ enum StepType {
         return const KeepChanging();
     }
   }
+
+  String get description {
+    switch (this) {
+      case StepType.first:
+        return 'Write your answer — it will help with emotion and distortion analysis';
+      case StepType.second:
+        return 'Describe how this thinking pattern shows up in your response to the trigger.';
+      case StepType.third:
+        return 'Write down how you plan to apply this strategy to work with your cognitive distortions';
+    }
+  }
 }

@@ -117,13 +117,16 @@ class EmotionRepository {
   }
 
   /// Изменение выбранной эмоции
-  void changeSelectedEmotion(EmotionModel emotion, int indexTrigers) {
+  void changeSelectedEmotion(EmotionModel emotion, int indexTrigers, isFull) {
     int indexEmotion = selectedInnerWork.trigers[indexTrigers].emotions
         .indexWhere((element) => element.id == emotion.id);
+    bool isSelected = !selectedInnerWork
+        .trigers[indexTrigers].emotions[indexEmotion].isSelected;
+    if (isFull && isSelected) {
+      return;
+    }
     selectedInnerWork.trigers[indexTrigers].emotions[indexEmotion] =
-        emotion.copyWith(
-            isSelected: !selectedInnerWork
-                .trigers[indexTrigers].emotions[indexEmotion].isSelected);
+        emotion.copyWith(isSelected: isSelected);
   }
 
   /// Получение списка триггеров

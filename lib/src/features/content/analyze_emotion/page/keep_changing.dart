@@ -9,6 +9,7 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/bottom_sheet.dart';
 
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/my_inner_work.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_emotion.dart';
 
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/add_item.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/add_widget.dart';
@@ -123,6 +124,7 @@ class _KeepChangingfState extends State<KeepChanging> {
                               openNoteBottomSheet(
                                 context: context,
                                 title: 'Comment on your trigger',
+                                description: StepType.first.description,
                                 type: NoteType.triger,
                                 index: 0,
                                 controller: controller1,
@@ -153,30 +155,6 @@ class _KeepChangingfState extends State<KeepChanging> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Cognitive distortions:',
-                                style: AppText.text20),
-                            AddWidget(onPressed: () async {
-                              controller2.text =
-                                  state.selectedInnerWork.cognitive[0].note;
-                              openNoteBottomSheet(
-                                context: context,
-                                title: 'Comment on your cognitive distortion',
-                                type: NoteType.cognitive,
-                                index: 0,
-                                controller: controller2,
-                              );
-                              // await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              // );
-                              setState(() {});
-                            }),
-                          ],
-                        ),
-                        const Gap(15),
                         ...List.generate(
                           state.selectedInnerWork.cognitive.length,
                           (index) => AddItem(
@@ -194,27 +172,6 @@ class _KeepChangingfState extends State<KeepChanging> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Inner Work:', style: AppText.text20),
-                            AddWidget(onPressed: () async {
-                              controller3.text =
-                                  state.selectedInnerWork.transforms[0].note;
-                              openNoteBottomSheet(
-                                context: context,
-                                title: 'Comment on your inner work',
-                                type: NoteType.transform,
-                                index: 0,
-                                controller: controller3,
-                              );
-                              // await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              setState(() {});
-                            }),
-                          ],
-                        ),
                         const Gap(15),
                         ...List.generate(
                           state.selectedInnerWork.transforms.length,

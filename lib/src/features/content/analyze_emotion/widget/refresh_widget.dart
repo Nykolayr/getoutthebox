@@ -41,10 +41,12 @@ class RefreshWidgetState extends State<RefreshWidget>
   }
 
   Future<void> onRefresh() async {
-    controller.forward(from: 0.0);
-    await Future.delayed(const Duration(seconds: 1));
-    controller.reset();
-    widget.onRefresh();
+    if (widget.isBegin) {
+      controller.forward(from: 0.0);
+      await Future.delayed(const Duration(seconds: 1));
+      controller.reset();
+      widget.onRefresh();
+    }
   }
 
   @override
@@ -70,11 +72,13 @@ class RefreshWidgetState extends State<RefreshWidget>
           ),
           const Gap(10),
           GestureDetector(
-            onTap: onRefresh,
+            onTap: widget.isBegin ? onRefresh : widget.onRefresh,
             child: RotationTransition(
               turns: controller,
               child: CircleSvg(
-                icon: 'assets/svg/refresh.svg',
+                icon: widget.isBegin
+                    ? 'assets/svg/refresh.svg'
+                    : 'assets/svg/edit.svg',
                 isBegin: widget.isBegin,
               ),
             ),

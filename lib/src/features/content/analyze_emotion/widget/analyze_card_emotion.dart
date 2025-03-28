@@ -17,9 +17,7 @@ class AnalyzeCardEmotion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isBegin
-          ? onPressed
-          : null, // Обрабатываем клик только если есть доступ
+      onTap: isBegin ? null : onPressed,
       child: Container(
         padding: getMarginOrPadding(all: 16),
         decoration: BoxDecoration(
