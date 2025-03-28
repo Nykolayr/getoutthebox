@@ -46,6 +46,8 @@ dependencies:
   flutter_launcher_icons: ^0.14.3 #https://pub.dev/packages/flutter_launcher_icons
   cached_network_image: ^3.4.1 #https://pub.dev/packages/cached_network_image
   intl: ^0.19.0 #https://pub.dev/packages/intl
+  google_fonts: ^6.1.0 #https://pub.dev/packages/google_fonts
+  dropdown_button2: ^2.3.9 #https://pub.dev/packages/dropdown_button2
 
 dev_dependencies:
   flutter_test:
@@ -78,4 +80,4 @@ flutter:
       fonts:
         - asset: assets/fonts/regular.otf
         - asset: assets/fonts/bold.otf
-          weight: 700
+          weight: 700        

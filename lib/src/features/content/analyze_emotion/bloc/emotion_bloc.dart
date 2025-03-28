@@ -37,6 +37,8 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     Get.find<EmotionRepository>().changeTypeInnerWork(event.type, event.id);
     emit(state.copyWith(
       innerWorks: Get.find<EmotionRepository>().inWorks,
+      selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
+      isListChange: !state.isListChange,
     ));
   }
 

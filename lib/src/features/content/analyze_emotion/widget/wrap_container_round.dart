@@ -7,18 +7,13 @@ class WrapContainerRound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 32, // Ограничиваем ширину
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: StyleManager.bgBlockColor,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: StyleManager.bgBlockColor,
-        ),
-        child: child,
-      ),
+      child: child,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppText {
   static const TextStyle text14Underline = TextStyle(
@@ -36,5 +37,11 @@ class AppText {
     color: Color(0xFF000000),
     fontWeight: FontWeight.w600,
     fontSize: 16,
+  );
+
+  static TextStyle text16Sriracha = GoogleFonts.sriracha(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: StyleManager.blackColor,
   );
 }

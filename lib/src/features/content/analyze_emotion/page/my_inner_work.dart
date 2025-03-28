@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:getoutofthebox/core/common/styles.dart';
-import 'package:getoutofthebox/core/common/theme.dart';
-import 'package:getoutofthebox/core/utils/size_utils.dart';
+import 'package:getoutofthebox/core/common/style_text.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_inner_work.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/date_item.dart';
-import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
-import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
-import 'package:getoutofthebox/src/features/widgets/custom_without_icon_button.dart';
 
 import '../bloc/emotion_bloc.dart';
 
@@ -31,74 +25,39 @@ class _MyInnerWorkState extends State<MyInnerWork> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            scaffoldKey.currentState?.openDrawer();
-          },
-          icon: SvgPicture.asset('assets/icons/hamburger.svg'),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: const CustomDrawer(),
-      ),
-      bottomNavigationBar: Padding(
-        padding: getMarginOrPadding(horizontal: 16, vertical: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const CustomBackButton(),
-            CustomWithoutIconButton(
-              title: 'Finish',
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/homepage',
-                  (route) => false,
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      body: BlocBuilder<EmotionBloc, EmotionState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return Container(
-            padding:
-                getMarginOrPadding(top: 50, bottom: 50, left: 16, right: 16),
+    return WrapInnerWork(
+      title: 'My Inner\nWork',
+      isFinish: true,
+      onFinish: () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/homepage',
+          (route) => false,
+        );
+      },
+      content: Column(
+        children: [
+          Text(
+            "You've worked through\n ${bloc.state.innerWorks.length} out of 33 cognitive distortions.",
+            style: AppText.text20,
+            textAlign: TextAlign.center,
+          ),
+          const Gap(20),
+          Expanded(
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: getMarginOrPadding(right: 16, bottom: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'My Inner\nWork',
-                          style: TextStylesManager.headerMainMenu,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
-                    ),
+                children: List.generate(
+                  bloc.state.innerWorks.length,
+                  (index) => DateItem(
+                    innerWork: bloc.state.innerWorks[index],
+                    onRemove: () => bloc.add(
+                        RemoveInnerWork(id: bloc.state.innerWorks[index].id)),
                   ),
-                  const Gap(20),
-                  ...state.innerWorks.map((e) => DateItem(
-                      innerWork: e,
-                      onRemove: () => bloc.add(RemoveInnerWork(id: e.id)))),
-                ],
+                ),
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

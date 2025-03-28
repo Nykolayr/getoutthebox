@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/styles.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
 
@@ -31,11 +32,51 @@ class CustomNextButton extends StatelessWidget {
                 style: TextStylesManager.standartMain
                     .copyWith(color: StyleManager.whiteColor),
               ),
-              SizedBox(width: 8.w),
+              const Gap(8),
               Icon(
                 Icons.arrow_forward,
                 size: 20.sp,
                 color: StyleManager.whiteColor,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomPlusButton extends StatelessWidget {
+  final void Function() onPressed;
+  const CustomPlusButton({
+    super.key,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.r),
+          color: StyleManager.mainColor,
+        ),
+        child: Padding(
+          padding: getMarginOrPadding(horizontal: 16, vertical: 11),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add,
+                size: 20.sp,
+                color: StyleManager.whiteColor,
+              ),
+              const Gap(8),
+              Text(
+                "Add",
+                style: TextStylesManager.standartMain
+                    .copyWith(color: StyleManager.whiteColor),
               ),
             ],
           ),

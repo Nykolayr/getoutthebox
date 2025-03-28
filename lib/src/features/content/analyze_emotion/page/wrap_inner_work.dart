@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/page/my_inner_work.dart';
+import 'package:get/get.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/title_step.dart';
 import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_back_button.dart';
-import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
+import 'package:getoutofthebox/src/features/widgets/custom_without_icon_button.dart';
 
 class WrapInnerWork extends StatefulWidget {
   final Widget content;
+  final bool isFinish;
+  final String title;
+  final Function() onFinish;
 
   const WrapInnerWork({
     super.key,
     required this.content,
+    required this.isFinish,
+    required this.title,
+    required this.onFinish,
   });
 
   @override
@@ -20,6 +27,7 @@ class WrapInnerWork extends StatefulWidget {
 
 class _WrapInnerWorkState extends State<WrapInnerWork> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final EmotionBloc bloc = Get.find<EmotionBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +57,23 @@ class _WrapInnerWorkState extends State<WrapInnerWork> {
           ),
           Positioned(
             top: 0,
-            right: 0,
+            left: 0,
             child: Image.asset('assets/img/fon_top_keep.png'),
           ),
           Positioned(
             bottom: 0,
-            left: 0,
+            right: 0,
             child: Image.asset('assets/img/fon_bottom_keep.png'),
           ),
-          const Positioned(
+          Positioned(
             top: 46,
             right: 16,
-            child: TitleSimple(title: 'Keep on Changing'),
+            child: TitleSimple(title: widget.title),
           ),
-          Positioned(
-            top: 180,
+          Positioned.fill(
+            top: 140,
             right: 16,
+            bottom: 100,
             left: 16,
             child: widget.content,
           ),
@@ -81,16 +90,13 @@ class _WrapInnerWorkState extends State<WrapInnerWork> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomBackButton(),
-                  CustomNextButton(
-                    isFinish: true,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyInnerWork()),
-                      );
-                    },
-                  ),
+                  if (widget.isFinish)
+                    CustomWithoutIconButton(
+                      title: 'Finish',
+                      onPressed: () {
+                        widget.onFinish();
+                      },
+                    ),
                 ],
               ),
             ),
