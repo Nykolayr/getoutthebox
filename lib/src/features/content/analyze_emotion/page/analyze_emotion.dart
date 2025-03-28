@@ -23,7 +23,6 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
   final TextEditingController controller = TextEditingController();
   final bloc = Get.find<EmotionBloc>();
   bool isBegin = true;
-  bool isFinish = false;
   int index = 0;
 
   @override
@@ -56,7 +55,7 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
       builder: (context, state) {
         return WrapEmotion(
           stepType: StepType.first,
-          isFinish: isFinish && state.countEmotions > 0,
+          isFinish: !isBegin && state.countEmotions > 0,
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -82,27 +81,17 @@ class _AnalyzeEmotionState extends State<AnalyzeEmotion> {
                 isBegin: isBegin,
                 onRefresh: () async {
                   if (isBegin) {
-                    isFinish = true;
                     isBegin = false;
                     updateTrigers();
-                    openNoteBottomSheet(
-                      context: context,
-                      title: TrigersModel.getTrigers()[index].title,
-                      description: StepType.first.description,
-                      type: NoteType.triger,
-                      index: index,
-                      controller: controller,
-                    );
-                  } else {
-                    openNoteBottomSheet(
-                      context: context,
-                      title: TrigersModel.getTrigers()[index].title,
-                      description: StepType.first.description,
-                      type: NoteType.triger,
-                      index: index,
-                      controller: controller,
-                    );
                   }
+                  openNoteBottomSheet(
+                    context: context,
+                    title: TrigersModel.getTrigers()[index].title,
+                    description: StepType.first.description,
+                    type: NoteType.triger,
+                    index: index,
+                    controller: controller,
+                  );
                 },
               ),
               const Gap(10),
