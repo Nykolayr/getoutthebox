@@ -82,6 +82,13 @@ class ChangeNote extends EmotionEvent {
   ChangeNote({required this.note, required this.type, required this.index});
 }
 
+/// Изменение типа посещения
+class ChangeTypeInnerWork extends EmotionEvent {
+  final InnerWorkType type;
+  final int id;
+  ChangeTypeInnerWork({required this.type, required this.id});
+}
+
 /// Тип заметки
 enum NoteType {
   triger,

@@ -36,3 +36,23 @@ class TitleStep extends StatelessWidget {
     );
   }
 }
+
+/// Просто заголовок
+class TitleSimple extends StatelessWidget {
+  final String title;
+  const TitleSimple({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          title,
+          style: TextStylesManager.headerMainMenu,
+          textAlign: TextAlign.end,
+        ),
+      ],
+    );
+  }
+}

@@ -7,6 +7,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/emotion_repo
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/experience_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_inner_work.dart';
 
 part 'emotion_event.dart';
 part 'emotion_state.dart';
@@ -27,6 +28,16 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
     on<ChangeIndexTransform>(_onChangeIndexTransform);
     on<ChangeIndexCognitive>(_onChangeIndexCognitive);
     on<ChangeNote>(_onChangeNote);
+    on<ChangeTypeInnerWork>(_onChangeTypeInnerWork);
+  }
+
+  /// Изменение типа посещения
+  Future<void> _onChangeTypeInnerWork(
+      ChangeTypeInnerWork event, Emitter<EmotionState> emit) async {
+    Get.find<EmotionRepository>().changeTypeInnerWork(event.type, event.id);
+    emit(state.copyWith(
+      innerWorks: Get.find<EmotionRepository>().inWorks,
+    ));
   }
 
   /// Изменение заметки

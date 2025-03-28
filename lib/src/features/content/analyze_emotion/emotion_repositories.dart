@@ -10,6 +10,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/models/exper
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/transform_model.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/trigers_model.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_inner_work.dart';
 
 /// Репозиторий для списка терапевтических игр
 class EmotionRepository {
@@ -34,6 +35,15 @@ class EmotionRepository {
   static EmotionRepository get instance {
     _instance ??= EmotionRepository._();
     return _instance!;
+  }
+
+  /// Изменение типа посещения
+  void changeTypeInnerWork(InnerWorkType type, int id) {
+    final index = inWorks.indexWhere((e) => e.id == id);
+    if (index != -1) {
+      inWorks[index].type = type;
+    }
+    updateSelectedInnerWork();
   }
 
   /// Изменение заметки
