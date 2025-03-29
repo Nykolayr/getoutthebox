@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/models/in_work_model.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_changing.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_chaning_edit.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/choose_status.dart';
 
 import 'package:intl/intl.dart';
@@ -25,10 +25,7 @@ class DateItem extends StatelessWidget {
             .add(ChangeSelectedInnerWork(innerWork: innerWork));
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => const KeepChanging(
-                    isFinish: false,
-                  )),
+          MaterialPageRoute(builder: (context) => const KeepChangingEdit()),
         );
       },
       child: BlocBuilder<EmotionBloc, EmotionState>(

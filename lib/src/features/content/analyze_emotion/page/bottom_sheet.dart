@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/bloc/emotion_bloc.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/text_edit_emotion.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/emotion_item_chose.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/show_modal_bottom.dart';
 import 'package:getoutofthebox/src/features/widgets/custom_without_icon_button.dart';
@@ -24,31 +25,7 @@ void openNoteBottomSheet({
     showCloseButton: true,
     content: Column(
       children: [
-        TextField(
-          controller: controller,
-          maxLines: null,
-          decoration: InputDecoration(
-            hintText: 'Write',
-            hintStyle: AppText.text14.copyWith(
-              color: StyleManager.grayColor,
-            ),
-            fillColor: StyleManager.bgBlockColor,
-            filled: true,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(
-                color: StyleManager.bgBlockColor,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(
-                color: StyleManager.bgBlockColor,
-              ),
-            ),
-          ),
-          minLines: 2,
-        ),
+        TextEditEmotion(controller: controller),
         const Gap(10),
         Text(
           description,

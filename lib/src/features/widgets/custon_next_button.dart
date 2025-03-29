@@ -46,9 +46,9 @@ class CustomNextButton extends StatelessWidget {
   }
 }
 
-class CustomPlusButton extends StatelessWidget {
+class CustomEditButton extends StatelessWidget {
   final void Function() onPressed;
-  const CustomPlusButton({
+  const CustomEditButton({
     super.key,
     required this.onPressed,
   });
@@ -68,13 +68,13 @@ class CustomPlusButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.add,
+                Icons.edit,
                 size: 20.sp,
                 color: StyleManager.whiteColor,
               ),
               const Gap(8),
               Text(
-                "Add",
+                "Edit",
                 style: TextStylesManager.standartMain
                     .copyWith(color: StyleManager.whiteColor),
               ),

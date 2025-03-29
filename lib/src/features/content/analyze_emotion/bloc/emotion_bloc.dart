@@ -39,6 +39,10 @@ class EmotionBloc extends Bloc<EmotionEvent, EmotionState> {
       innerWorks: Get.find<EmotionRepository>().inWorks,
       selectedInnerWork: Get.find<EmotionRepository>().selectedInnerWork,
       isListChange: !state.isListChange,
+      countInnerWorksCompleted: Get.find<EmotionRepository>()
+          .inWorks
+          .where((e) => e.type == InnerWorkType.completed)
+          .length,
     ));
   }
 

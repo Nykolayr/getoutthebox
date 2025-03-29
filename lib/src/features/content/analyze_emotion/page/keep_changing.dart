@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
+import 'package:getoutofthebox/src/features/content/analyze_emotion/page/keep_chaning_edit.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/my_inner_work.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/page/wrap_inner_work.dart';
 
@@ -12,17 +13,13 @@ import 'package:getoutofthebox/src/features/widgets/custon_next_button.dart';
 import '../bloc/emotion_bloc.dart';
 
 class KeepChanging extends StatefulWidget {
-  final bool isFinish;
-  const KeepChanging({super.key, this.isFinish = true});
+  const KeepChanging({super.key});
 
   @override
   State<KeepChanging> createState() => _KeepChangingfState();
 }
 
 class _KeepChangingfState extends State<KeepChanging> {
-  TextEditingController controller1 = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
-  TextEditingController controller3 = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final EmotionBloc bloc = Get.find<EmotionBloc>();
   final List<String> innerWorks = [
@@ -34,9 +31,6 @@ class _KeepChangingfState extends State<KeepChanging> {
 
   @override
   void dispose() {
-    controller1.dispose();
-    controller2.dispose();
-    controller3.dispose();
     super.dispose();
   }
 
@@ -46,7 +40,6 @@ class _KeepChangingfState extends State<KeepChanging> {
       bloc: bloc,
       builder: (context, state) {
         return WrapInnerWork(
-          isFinish: widget.isFinish,
           onFinish: () {
             bloc.add(ChangeTypeInnerWork(
                 type: InnerWorkType.needsReview,
@@ -56,7 +49,7 @@ class _KeepChangingfState extends State<KeepChanging> {
               MaterialPageRoute(builder: (context) => const MyInnerWork()),
             );
           },
-          title: 'Keep on\nChanging',
+          type: WrapInnerWorkType.keepChanging,
           content: SingleChildScrollView(
             child: WrapContainerRound(
               child: Column(
@@ -67,21 +60,13 @@ class _KeepChangingfState extends State<KeepChanging> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Triggers:', style: AppText.text20),
-                      CustomPlusButton(onPressed: () {}),
-
-                      // AddWidget(onPressed: () async {
-                      //   controller1.text =
-                      //       state.selectedInnerWork.trigers[0].note;
-                      //   openNoteBottomSheet(
-                      //     context: context,
-                      //     title: 'Comment on your trigger',
-                      //     description: StepType.first.description,
-                      //     type: NoteType.triger,
-                      //     index: 0,
-                      //     controller: controller1,
-                      //   );
-                      //   setState(() {});
-                      // }),
+                      CustomEditButton(onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const KeepChangingEdit()),
+                        );
+                      }),
                     ],
                   ),
                   const Gap(10),

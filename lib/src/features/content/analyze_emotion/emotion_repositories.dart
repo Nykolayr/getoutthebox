@@ -20,6 +20,9 @@ class EmotionRepository {
   List<InWorkModel> inWorks = [];
   InWorkModel selectedInnerWork = InWorkModel.init(0);
 
+  /// порядковый номер очередной картинки при успешном выполнении
+  int indexSuccess = 1;
+
   // Приватный конструктор
   EmotionRepository._() {
     apiService = Get.find<Api>();
@@ -35,6 +38,15 @@ class EmotionRepository {
   static EmotionRepository get instance {
     _instance ??= EmotionRepository._();
     return _instance!;
+  }
+
+  /// изменения номера картинки при успешном выполнении
+  void changeIndexSuccess() {
+    if (indexSuccess == 3) {
+      indexSuccess = 1;
+    } else {
+      indexSuccess++;
+    }
   }
 
   /// Изменение типа посещения
@@ -80,6 +92,7 @@ class EmotionRepository {
   /// Добавление cognitive
   int addCognitive(int index) {
     CognitiveModel cognitive = CognitiveModel.getCognitive()[index];
+    Logger.i('addCognitive: ${cognitive.toJson()}');
     selectedInnerWork.cognitive.add(cognitive);
     updateSelectedInnerWork();
     return selectedInnerWork.cognitive.length - 1;

@@ -13,6 +13,7 @@ class EmotionState extends Equatable {
   final int indexTransform;
   final int indexCognitive;
   final int countEmotions;
+  final int countInnerWorksCompleted;
   @override
   const EmotionState({
     required this.emotionGames,
@@ -27,6 +28,7 @@ class EmotionState extends Equatable {
     required this.indexTransform,
     required this.indexCognitive,
     required this.countEmotions,
+    required this.countInnerWorksCompleted,
   });
 
   factory EmotionState.initial() {
@@ -43,6 +45,10 @@ class EmotionState extends Equatable {
       indexTransform: 0,
       indexCognitive: 0,
       countEmotions: 0,
+      countInnerWorksCompleted: Get.find<EmotionRepository>()
+          .inWorks
+          .where((e) => e.type == InnerWorkType.completed)
+          .length,
     );
   }
 
@@ -59,6 +65,7 @@ class EmotionState extends Equatable {
     int? indexTransform,
     int? indexCognitive,
     int? countEmotions,
+    int? countInnerWorksCompleted,
   }) {
     final shouldToggleList =
         isListChange != null && isListChange != this.isListChange ||
@@ -81,6 +88,8 @@ class EmotionState extends Equatable {
       indexTransform: indexTransform ?? this.indexTransform,
       indexCognitive: indexCognitive ?? this.indexCognitive,
       countEmotions: countEmotions ?? this.countEmotions,
+      countInnerWorksCompleted:
+          countInnerWorksCompleted ?? this.countInnerWorksCompleted,
     );
   }
 
@@ -98,5 +107,6 @@ class EmotionState extends Equatable {
         indexTransform,
         indexCognitive,
         countEmotions,
+        countInnerWorksCompleted,
       ];
 }

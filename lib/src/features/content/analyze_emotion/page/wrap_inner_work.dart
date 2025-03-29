@@ -9,15 +9,13 @@ import 'package:getoutofthebox/src/features/widgets/custom_without_icon_button.d
 
 class WrapInnerWork extends StatefulWidget {
   final Widget content;
-  final bool isFinish;
-  final String title;
+  final WrapInnerWorkType type;
   final Function() onFinish;
 
   const WrapInnerWork({
     super.key,
     required this.content,
-    required this.isFinish,
-    required this.title,
+    required this.type,
     required this.onFinish,
   });
 
@@ -68,7 +66,7 @@ class _WrapInnerWorkState extends State<WrapInnerWork> {
           Positioned(
             top: 46,
             right: 16,
-            child: TitleSimple(title: widget.title),
+            child: TitleSimple(title: widget.type.title),
           ),
           Positioned.fill(
             top: 140,
@@ -90,13 +88,12 @@ class _WrapInnerWorkState extends State<WrapInnerWork> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CustomBackButton(),
-                  if (widget.isFinish)
-                    CustomWithoutIconButton(
-                      title: 'Finish',
-                      onPressed: () {
-                        widget.onFinish();
-                      },
-                    ),
+                  CustomWithoutIconButton(
+                    title: widget.type.buttonTitle,
+                    onPressed: () {
+                      widget.onFinish();
+                    },
+                  ),
                 ],
               ),
             ),
@@ -107,6 +104,36 @@ class _WrapInnerWorkState extends State<WrapInnerWork> {
   }
 }
 
+/// тип wrap inner work
+enum WrapInnerWorkType {
+  keepChanging,
+  keepChangingEdit,
+  keepChangingFinish;
+
+  String get buttonTitle {
+    switch (this) {
+      case WrapInnerWorkType.keepChanging:
+        return 'Save & Continue';
+      case WrapInnerWorkType.keepChangingEdit:
+        return 'Save';
+      case WrapInnerWorkType.keepChangingFinish:
+        return 'Finish';
+    }
+  }
+
+  String get title {
+    switch (this) {
+      case WrapInnerWorkType.keepChanging:
+        return 'Keep on \nchanging';
+      case WrapInnerWorkType.keepChangingEdit:
+        return 'Keep on \nchanging';
+      case WrapInnerWorkType.keepChangingFinish:
+        return 'My Inner \nWork';
+    }
+  }
+}
+
+/// типы внутренних работ
 enum InnerWorkType {
   inProgress,
   needsReview,
