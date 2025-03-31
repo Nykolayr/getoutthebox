@@ -4,10 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:getoutofthebox/core/common/theme.dart';
 import 'package:getoutofthebox/core/utils/size_utils.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/app_bar.dart';
-import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/bottom_bar.dart';
 import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/question_item.dart';
-import 'package:getoutofthebox/src/features/drawer/custom_drawer.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/example_cards.dart';
+import 'package:getoutofthebox/src/features/content/wrap_page.dart';
 
 import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
 
@@ -67,61 +66,62 @@ class _SelectedTherapeuticGamesState extends State<SelectedTherapeuticGames> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      extendBodyBehindAppBar: true,
-      appBar: AppBarGame(title: widget.game.title, scaffoldKey: scaffoldKey),
-      drawer: const CustomDrawer(),
-      bottomNavigationBar: BottomBarGame(
-        onNextButtonPressed: () {},
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: getMarginOrPadding(
-            top: 10,
-            left: 16,
-            right: 16,
-            bottom: 50,
+    return WrapPage(
+      title: widget.game.title,
+      onNext: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExampleCards(
+              game: widget.game,
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Description',
-                style: AppText.text20,
-              ),
-              Gap(10.h),
-              Text(
-                description,
-                style: AppText.text14,
-              ),
-              Gap(30.h),
-              ...List.generate(
-                questions.length,
-                (index) => Padding(
-                  padding: EdgeInsets.only(
-                      bottom: index != questions.length - 1 ? 15.h : 0),
-                  child: QuestionItem(
-                    question: questions[index].question,
-                    index: index,
-                  ),
+        );
+      },
+      isNextButtonVisible: true,
+      content: SingleChildScrollView(
+        padding: getMarginOrPadding(
+          top: 10,
+          bottom: 50,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Description',
+              style: AppText.text20,
+            ),
+            Gap(10.h),
+            Text(
+              description,
+              style: AppText.text14,
+            ),
+            Gap(30.h),
+            ...List.generate(
+              questions.length,
+              (index) => Padding(
+                padding: EdgeInsets.only(
+                    bottom: index != questions.length - 1 ? 15.h : 0),
+                child: QuestionItem(
+                  question: questions[index].question,
+                  index: index,
                 ),
               ),
-              Gap(20.h),
-              const Text(
-                'Game Objective',
-                style: AppText.text20,
-              ),
-              Gap(10.h),
-              Text(
-                goal,
-                style: AppText.text14,
-                textAlign: TextAlign.center,
-              ),
-              Gap(30.h),
-            ],
-          ),
+            ),
+            Gap(20.h),
+            const Text(
+              'Game Objective',
+              style: AppText.text20,
+            ),
+            Gap(10.h),
+            Text(
+              goal,
+              style: AppText.text14,
+              textAlign: TextAlign.center,
+            ),
+            Gap(30.h),
+          ],
         ),
       ),
     );

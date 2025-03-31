@@ -7,10 +7,12 @@ import 'package:getoutofthebox/core/utils/size_utils.dart';
 class CustomNextButton extends StatelessWidget {
   final void Function() onPressed;
   final bool isFinish;
+  final String? title;
   const CustomNextButton({
     super.key,
     required this.onPressed,
     this.isFinish = true,
+    this.title,
   });
 
   @override
@@ -28,16 +30,18 @@ class CustomNextButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Next",
+                title ?? "Next",
                 style: TextStylesManager.standartMain
                     .copyWith(color: StyleManager.whiteColor),
               ),
-              const Gap(8),
-              Icon(
-                Icons.arrow_forward,
-                size: 20.sp,
-                color: StyleManager.whiteColor,
-              ),
+              if (title == null) ...[
+                const Gap(8),
+                Icon(
+                  Icons.arrow_forward,
+                  size: 20.sp,
+                  color: StyleManager.whiteColor,
+                ),
+              ],
             ],
           ),
         ),
