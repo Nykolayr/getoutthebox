@@ -3,11 +3,17 @@ import 'package:getoutofthebox/core/common/theme.dart';
 
 class WrapContainerRound extends StatelessWidget {
   final Widget child;
-  const WrapContainerRound({super.key, required this.child});
+  final bool isMargin;
+  const WrapContainerRound({
+    super.key,
+    required this.child,
+    this.isMargin = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: isMargin ? 10 : 0),
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

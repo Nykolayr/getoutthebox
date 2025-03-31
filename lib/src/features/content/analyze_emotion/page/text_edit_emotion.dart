@@ -4,10 +4,12 @@ import 'package:getoutofthebox/core/common/theme.dart';
 class TextEditEmotion extends StatelessWidget {
   final TextEditingController controller;
   final bool isEdit;
+  final String hint;
   const TextEditEmotion({
     super.key,
     required this.controller,
     this.isEdit = false,
+    this.hint = 'Write',
   });
 
   @override
@@ -16,7 +18,7 @@ class TextEditEmotion extends StatelessWidget {
       controller: controller,
       maxLines: null,
       decoration: InputDecoration(
-        hintText: 'Write',
+        hintText: hint,
         hintStyle: AppText.text14.copyWith(
           color: StyleManager.grayColor,
         ),

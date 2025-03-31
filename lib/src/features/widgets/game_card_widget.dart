@@ -40,24 +40,27 @@ class GameCardWidget extends StatelessWidget {
           Positioned(
             bottom: 10,
             left: 10,
-            child: CachedNetworkImage(
-              imageUrl: pathImage,
-              placeholder: (context, url) => FutureBuilder(
-                future: Future.delayed(const Duration(seconds: 1)),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return const Icon(Icons.image);
-                  }
-                  return const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                        color: StyleManager.mainColor),
-                  );
-                },
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.image),
-            ),
+            child: pathImage.contains('assets')
+                ? Image.asset(pathImage)
+                : CachedNetworkImage(
+                    imageUrl: pathImage,
+                    placeholder: (context, url) => FutureBuilder(
+                      future: Future.delayed(const Duration(seconds: 1)),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return const Icon(Icons.image);
+                        }
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              color: StyleManager.mainColor),
+                        );
+                      },
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.image),
+                  ),
           ),
           Positioned(
             bottom: 17,

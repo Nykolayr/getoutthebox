@@ -44,4 +44,11 @@ class AppText {
     fontWeight: FontWeight.w400,
     color: StyleManager.blackColor,
   );
+
+  static const TextStyle text18 = TextStyle(
+    fontFamily: 'regular',
+    color: Color(0xFF000000),
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+  );
 }

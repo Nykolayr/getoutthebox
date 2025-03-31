@@ -8,7 +8,7 @@ import 'package:getoutofthebox/src/features/content/analyze_emotion/widget/quest
 import 'package:getoutofthebox/src/features/content/therapeutic_games/example_cards.dart';
 import 'package:getoutofthebox/src/features/content/wrap_page.dart';
 
-import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/models/therapeutic_games_response_model.dart';
 
 class SelectedTherapeuticGames extends StatefulWidget {
   final TherapeuticGame game;

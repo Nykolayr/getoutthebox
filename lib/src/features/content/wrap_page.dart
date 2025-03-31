@@ -12,6 +12,7 @@ class WrapPage extends StatefulWidget {
   final Function() onNext;
   final bool isNextButtonVisible;
   final String? titleButton;
+  final bool isBg;
 
   const WrapPage({
     super.key,
@@ -20,6 +21,7 @@ class WrapPage extends StatefulWidget {
     required this.onNext,
     this.isNextButtonVisible = true,
     this.titleButton,
+    this.isBg = false,
   });
 
   @override
@@ -55,7 +57,18 @@ class _WrapPageState extends State<WrapPage> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
           ),
-
+          if (widget.isBg)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Image.asset('assets/img/fon_top.png'),
+            ),
+          if (widget.isBg)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Image.asset('assets/img/fon_bottom.png'),
+            ),
           Positioned(
             top: 46,
             right: 16,

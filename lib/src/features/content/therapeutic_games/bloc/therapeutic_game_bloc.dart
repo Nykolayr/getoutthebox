@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/src/features/content/therapeutic_games/therapeutic_games_repository.dart';
-import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/models/therapeutic_games_response_model.dart';
 part 'therapeutic_game_event.dart';
 part 'therapeutic_game_state.dart';
 

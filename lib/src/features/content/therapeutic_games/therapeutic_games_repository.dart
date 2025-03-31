@@ -2,7 +2,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:get/get.dart';
 import 'package:getoutofthebox/core/network/api/api.dart';
 import 'package:getoutofthebox/core/network/api/response_api.dart';
-import 'package:getoutofthebox/src/models/therapeutic_games_response_model.dart';
+import 'package:getoutofthebox/src/features/content/therapeutic_games/models/therapeutic_games_response_model.dart';
 
 /// Репозиторий для списка терапевтических игр
 class TherapeuticGamesRepository {
